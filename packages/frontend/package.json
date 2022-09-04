@@ -1,0 +1,50 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "start": "vite",
+    "build": "cross-env NODE_ENV=production vite build",
+    "pretty": "prettier --check src",
+    "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src",
+    "update": "yarn build && git add . && git commit -m 'update' && git push"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@babel/eslint-parser": "^7.18.9",
+    "@vitejs/plugin-react": "^2.0.1",
+    "preact": "^10.10.6"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.3.0",
+    "autoprefixer": "^10.4.8",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-no-relative-import-paths": "^1.4.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.5",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "eslint-plugin-valtio": "^0.6.0",
+    "postcss": "^8.4.16",
+    "prettier": "^2.7.1",
+    "react-scripts": "^5.0.1",
+    "rollup-plugin-visualizer": "^5.8.0",
+    "tailwindcss": "^3.1.8",
+    "tailwindcss-classnames": "^3.0.6",
+    "vite": "^3.0.9"
+  }
+}
