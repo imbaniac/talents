@@ -1,0 +1,59 @@
+{
+    "name": "talents-eth",
+    "private": true,
+    "scripts": {
+        "chain": "yarn workspace @talents-eth/hardhat chain",
+        "fork": "yarn workspace @talents-eth/hardhat fork",
+        "node": "yarn workspace @talents-eth/hardhat chain",
+        "test": "yarn workspace @talents-eth/hardhat test",
+        "compile": "yarn workspace @talents-eth/hardhat compile",
+        "deploy": "yarn workspace @talents-eth/hardhat deploy",
+        "verify": "yarn workspace @talents-eth/hardhat verify",
+        "watch": "yarn workspace @talents-eth/hardhat watch",
+        "accounts": "yarn workspace @talents-eth/hardhat accounts",
+        "balance": "yarn workspace @talents-eth/hardhat balance",
+        "send": "yarn workspace @talents-eth/hardhat send",
+        "generate": "yarn workspace @talents-eth/hardhat generate",
+        "account": "yarn workspace @talents-eth/hardhat account",
+        "mineContractAddress": "cd packages/hardhat && npx hardhat mineContractAddress",
+        "wallet": "cd packages/hardhat && npx hardhat wallet",
+        "fundedwallet": "cd packages/hardhat && npx hardhat fundedwallet",
+        "flatten": "cd packages/hardhat && npx hardhat flatten",
+        "clean": "cd packages/hardhat && npx hardhat clean",
+        "run-graph-node": "yarn workspace @talents-eth/services run-graph-node",
+        "remove-graph-node": "yarn workspace @talents-eth/services remove-graph-node",
+        "clean-graph-node": "yarn workspace @talents-eth/services clean-graph-node",
+        "graph-codegen": "yarn workspace @talents-eth/subgraph graph codegen",
+        "graph-build": "yarn workspace @talents-eth/subgraph graph build",
+        "graph-create-local": "yarn workspace @talents-eth/subgraph graph create --node http://localhost:8020/ talents-eth/your-contract",
+        "graph-remove-local": "yarn workspace @talents-eth/subgraph graph remove --node http://localhost:8020/ talents-eth/your-contract",
+        "graph-deploy-local": "yarn workspace @talents-eth/subgraph graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 talents-eth/your-contract",
+        "graph-ship-local": "yarn graph-codegen && yarn graph-build --network localhost && yarn graph-deploy-local",
+        "deploy-and-graph": "yarn deploy && yarn graph-ship-local",
+        "postinstall": "husky install",
+        "prepare": "husky install"
+    },
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": [
+            "**/@graphprotocol/graph-ts",
+            "**/@graphprotocol/graph-ts/**",
+            "**/hardhat",
+            "**/hardhat/**",
+            "**/hardhat-ts",
+            "**/hardhat-ts/**"
+        ]
+    },
+    "devDependencies": {
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3"
+    },
+    "lint-staged": {
+        "packages/react-app/src/**/*.{js,jsx}": [
+            "prettier --write",
+            "eslint --fix"
+        ]
+    }
+}
