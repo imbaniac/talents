@@ -1,0 +1,9 @@
+{
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "solidity.defaultCompiler": "localNodeModule"
+}
