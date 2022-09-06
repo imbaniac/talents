@@ -1,8 +1,6 @@
 // deploy/00_deploy_your_contract.js
 
-const { ethers } = require("hardhat");
-
-const localChainId = "31337";
+const { ethers } = require('hardhat');
 
 // const sleep = (ms) =>
 //   new Promise((r) =>
@@ -12,22 +10,33 @@ const localChainId = "31337";
 //     }, ms)
 //   );
 
-module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
-    const { deploy } = deployments;
-    const { deployer } = await getNamedAccounts();
-    const chainId = await getChainId();
+const main = async (hre) => {
+  const { getNamedAccounts, deployments, getChainId, ethernal } = hre;
+  const { deploy } = deployments;
+  const { deployer } = await getNamedAccounts();
+  const chainId = await getChainId();
 
-    await deploy("YourContract", {
-        // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-        from: deployer,
-        // args: [ "Hello", ethers.utils.parseEther("1.5") ],
-        log: true,
-        waitConfirmations: 5,
-    });
+  console.log('DEPLOYER', deployer);
+  console.log('CHAIN ID', chainId);
 
-    // Getting a previously deployed contract
-    const YourContract = await ethers.getContract("YourContract", deployer);
-    /*  await YourContract.setPurpose("Hello");
+  await deploy('Candidate', {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
+    log: true,
+    // waitConfirmations: 5,
+  });
+
+  // Getting a previously deployed contract
+  const Candidate = await ethers.getContract('Candidate', deployer);
+  console.log('ADDRESS', Candidate.address);
+
+  await ethernal.push({
+    name: 'Candidate',
+    address: Candidate.address,
+  });
+
+  /*  await YourContract.setPurpose("Hello");
   
     // To take ownership of yourContract using the ownable library uncomment next line and add the 
     // address you want to be the owner. 
@@ -38,7 +47,7 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
     //const YourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   */
 
-    /*
+  /*
   //If you want to send value to an address from the deployer
   const deployerWallet = ethers.provider.getSigner()
   await deployerWallet.sendTransaction({
@@ -47,14 +56,14 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   })
   */
 
-    /*
+  /*
   //If you want to send some ETH to a contract on deploy (make your constructor payable!)
   const yourContract = await deploy("YourContract", [], {
   value: ethers.utils.parseEther("0.05")
   });
   */
 
-    /*
+  /*
   //If you want to link a library into your contract:
   // reference: https://github.com/austintgriffith/scaffold-eth/blob/using-libraries-example/packages/hardhat/scripts/deploy.js#L19
   const yourContract = await deploy("YourContract", [], {}, {
@@ -62,25 +71,27 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   });
   */
 
-    // Verify from the command line by running `yarn verify`
+  // Verify from the command line by running `yarn verify`
 
-    // You can also Verify your contracts with Etherscan here...
-    // You don't want to verify on localhost
-    // try {
-    //   if (chainId !== localChainId) {
-    //     await run("verify:verify", {
-    //       address: YourContract.address,
-    //       contract: "contracts/YourContract.sol:YourContract",
-    //       constructorArguments: [],
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+  // You can also Verify your contracts with Etherscan here...
+  // You don't want to verify on localhost
+  // try {
+  //   if (chainId !== localChainId) {
+  //     await run("verify:verify", {
+  //       address: YourContract.address,
+  //       contract: "contracts/YourContract.sol:YourContract",
+  //       constructorArguments: [],
+  //     });
+  //   }
+  // } catch (error) {
+  //   console.error(error);
+  // }
 };
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
 
-module.exports.tags = ["YourContract"];
+// main().catch((error) => {
+//   console.error(error);
+//   process.exitCode = 1;
+// });
+
+module.exports = main;
+module.exports.tags = ['YourContract'];
