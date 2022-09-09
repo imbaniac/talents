@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import ConnectButton from './ConnectButton';
+
 const Navbar = () => {
   return (
     <div className="navbar bg-base-100 p-4">
@@ -53,10 +56,12 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">Talents</a>
+        <Link to="/" className="btn btn-ghost normal-case text-xl">
+          Talents
+        </Link>
       </div>
       <div className="navbar-end">
-        <a className="btn">Connect</a>
+        <ConnectButton />
       </div>
     </div>
   );

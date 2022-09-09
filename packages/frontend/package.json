@@ -6,8 +6,7 @@
     "start": "vite",
     "build": "cross-env NODE_ENV=production vite build",
     "pretty": "prettier --check src",
-    "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src",
-    "update": "yarn build && git add . && git commit -m 'update' && git push"
+    "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src"
   },
   "browserslist": {
     "production": [
@@ -23,12 +22,19 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.18.9",
+    "@rainbow-me/rainbowkit": "^0.5.1",
+    "@tailwindcss/typography": "^0.5.7",
     "@vitejs/plugin-react": "^2.0.1",
     "daisyui": "^2.24.0",
-    "preact": "^10.10.6"
+    "ethers": "^5.7.0",
+    "preact": "^10.10.6",
+    "react-hook-form": "^7.34.2",
+    "react-router-dom": "6",
+    "wagmi": "^0.6.4"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.3.0",
+    "@rollup/plugin-alias": "^3.1.9",
     "autoprefixer": "^10.4.8",
     "cross-env": "^7.0.3",
     "eslint": "^8.23.0",
