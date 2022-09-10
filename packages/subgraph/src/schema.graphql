@@ -1,15 +1,79 @@
-type Purpose @entity {
-  id: ID!
-  sender: Sender!
-  purpose: String!
-  createdAt: BigInt!
-  transactionHash: String!
+# type Purpose @entity {
+#   id: ID!
+#   sender: Sender!
+#   purpose: String!
+#   createdAt: BigInt!
+#   transactionHash: String!
+# }
+
+# type Sender @entity {
+#   id: ID!
+#   address: Bytes!
+#   purposes: [Purpose!] @derivedFrom(field: "sender")
+#   createdAt: BigInt!
+#   purposeCount: BigInt!
+# }
+
+type Account @entity {
+  id: Bytes!
+  asERC721: ERC721Contract
+  Profile: [Profile!]! @derivedFrom(field: "owner")
+  # ERC721operatorOwner: [ERC721Operator!]! @derivedFrom(field: "owner")
+  # ERC721operatorOperator: [ERC721Operator!]! @derivedFrom(field: "operator")
+  # ERC721transferFromEvent: [ERC721Transfer!]! @derivedFrom(field: "from")
+  # ERC721transferToEvent: [ERC721Transfer!]! @derivedFrom(field: "to")
+  events: [Event!]! @derivedFrom(field: "emitter")
 }
 
-type Sender @entity {
+type ERC721Contract @entity(immutable: true) {
+  id: Bytes!
+  asAccount: Account!
+  supportsMetadata: Boolean
+  name: String
+  symbol: String
+  profiles: [Profile!]! @derivedFrom(field: "contract")
+  # operators: [ERC721Operator!]! @derivedFrom(field: "contract")
+  # transfers: [ERC721Transfer!]! @derivedFrom(field: "contract")
+}
+
+type Profile @entity {
   id: ID!
-  address: Bytes!
-  purposes: [Purpose!] @derivedFrom(field: "sender")
-  createdAt: BigInt!
-  purposeCount: BigInt!
+  contract: ERC721Contract!
+  identifier: BigInt!
+  owner: Account!
+  uri: String
+  # transfers: [ERC721Transfer!]! @derivedFrom(field: "token")
+}
+
+# type ERC721Operator @entity {
+#   id: ID!
+#   contract: ERC721Contract!
+#   owner: Account!
+#   operator: Account!
+#   approved: Boolean!
+# }
+
+# type ERC721Transfer implements Event @entity(immutable: true) {
+#   id: ID!
+#   emitter: Account!
+#   transaction: Transaction!
+#   timestamp: BigInt!
+#   contract: ERC721Contract!
+#   token: ERC721Token!
+#   from: Account!
+#   to: Account!
+# }
+
+interface Event {
+  id: ID!
+  transaction: Transaction!
+  emitter: Account!
+  timestamp: BigInt!
+}
+
+type Transaction @entity(immutable: true) {
+  id: ID!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  events: [Event!]! @derivedFrom(field: "transaction")
 }

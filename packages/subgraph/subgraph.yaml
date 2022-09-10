@@ -1,25 +1,24 @@
 specVersion: 0.0.4
+description: Subgraph for getting all Candidates
 schema:
   file: ./src/schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: YourContract
+    name: Candidate
     network: localhost
     source:
+      abi: Candidate
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-      abi: YourContract
-      startBlock: 1
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - Purpose
-        - Sender
+        - Profile
       abis:
-        - name: YourContract
-          file: ./abis/localhost_YourContract.json
+        - name: Candidate
+          file: ./abis/localhost_Candidate.json
       eventHandlers:
-        - event: SetPurpose(address,string)
-          handler: handleSetPurpose
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
       file: ./src/mapping.ts
