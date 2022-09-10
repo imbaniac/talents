@@ -1,4 +1,12 @@
 import { Controller, useForm } from 'react-hook-form';
+import {
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+} from 'wagmi';
+import contracts from '../contracts/hardhat_contracts.json';
 
 import {
   DEFAULT_OPTION,
@@ -20,10 +28,42 @@ const NewProfile = () => {
     },
   });
 
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+
+  const CandidateContract = contracts[chain.id]?.[0].contracts.Candidate || {};
+  const TEMP_URL = 'https://google.com';
+  const { config } = usePrepareContractWrite({
+    addressOrName: CandidateContract.address,
+    contractInterface: CandidateContract.abi,
+    functionName: 'createCandidate',
+    args: [address, TEMP_URL],
+    overrides: {
+      gasLimit: 200000,
+    },
+  });
+
+  const { data, isLoading, isSuccess, write } = useContractWrite(config);
+
+  console.log('LOADING', isLoading);
+  console.log('RESULT', isSuccess, data);
+
+  console.log('REQUESTING BALANCE', address);
+  const { data: balanceOf, error } = useContractRead({
+    addressOrName: CandidateContract.address,
+    contractInterface: CandidateContract.abi,
+    functionName: 'balanceOf',
+    args: address,
+    chainId: chain.id,
+  });
+
+  console.log('BAlANCE', balanceOf, error);
+
   const onSubmit = (data) => {
     const parsedExperience = EXPERIENCE_GRADE[data.experience].value;
     const newData = { ...data, experience: parsedExperience };
     console.log(newData);
+    write();
   };
   // TODO: handle errors
   console.log('ERRORS', errors);
@@ -34,7 +74,7 @@ const NewProfile = () => {
   return (
     <div className="container mx-auto">
       <form
-        className="m-16 flex flex-col gap-8"
+        className="m-8 flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl font-bold">New Profile</h1>

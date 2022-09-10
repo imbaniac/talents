@@ -10,7 +10,10 @@ import NewProfile from './components/NewProfile';
 import Welcome from './components/Welcome';
 
 const { chains, provider } = configureChains(
-  [chain.hardhat, chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [
+    chain.hardhat,
+    // chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum
+  ],
   [
     jsonRpcProvider({
       rpc: () => ({
