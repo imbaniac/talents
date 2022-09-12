@@ -11,9 +11,12 @@ import contracts from '../contracts/hardhat_contracts.json';
 import {
   DEFAULT_OPTION,
   DEVELOPMENT_JOB_OPTIONS,
+  EMPLOYEMENT_TYPES,
   ENGLISH_LEVELS,
   EXPERIENCE_GRADE,
+  SKILLS,
 } from '../utils/constants';
+import MultipleComboBox from './_molecules/MultiComboBox';
 
 const NewProfile = () => {
   const {
@@ -24,6 +27,7 @@ const NewProfile = () => {
     control,
   } = useForm({
     defaultValues: {
+      // category: DEFAULT_OPTION.value,
       experience: EXPERIENCE_GRADE[0].value,
     },
   });
@@ -45,10 +49,6 @@ const NewProfile = () => {
 
   const { data, isLoading, isSuccess, write } = useContractWrite(config);
 
-  console.log('LOADING', isLoading);
-  console.log('RESULT', isSuccess, data);
-
-  console.log('REQUESTING BALANCE', address);
   const { data: balanceOf, error } = useContractRead({
     addressOrName: CandidateContract.address,
     contractInterface: CandidateContract.abi,
@@ -57,22 +57,48 @@ const NewProfile = () => {
     chainId: chain.id,
   });
 
-  console.log('BAlANCE', balanceOf, error);
-
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const parsedExperience = EXPERIENCE_GRADE[data.experience].value;
-    const newData = { ...data, experience: parsedExperience };
-    console.log(newData);
-    write();
+    const newData = {
+      ...data,
+      experience: parsedExperience,
+      employmentTypes: data.employment_types.filter((type) => type),
+    };
+    console.log('SUBMITTING', newData);
+
+    // const nftstorage = new NFTStorage({
+    //   token: import.meta.env.VITE_NFT_STORAGE_KEY,
+    // });
+
+    // const preparedData = {
+    //   name: data.position,
+    //   description: 'Test description',
+    //   properties: {
+    //     category: data.category,
+    //     experience: data.experience,
+    //   },
+    // };
+
+    // const blobData = new Blob([JSON.stringify(preparedData)], {
+    //   type: 'application/json',
+    // });
+
+    // const metadata = await nftstorage.storeBlob(blobData);
+
+    // console.log('SAVED', metadata);
+
+    // await write();
   };
   // TODO: handle errors
   console.log('ERRORS', errors);
+
+  console.log(watch());
 
   const experienceValue = watch('experience');
   const experienceLabel = EXPERIENCE_GRADE[experienceValue]?.displayLabel;
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pb-8">
       <form
         className="m-8 flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
@@ -93,14 +119,12 @@ const NewProfile = () => {
           <label className="text-sm font-semibold">Category</label>
           <select
             className="select select-bordered w-full"
-            {...register('category')}
+            {...register('category', {
+              validate: (value) => value && value !== DEFAULT_OPTION.value,
+            })}
           >
             {[DEFAULT_OPTION, ...DEVELOPMENT_JOB_OPTIONS].map((option) => (
-              <option
-                defaultValue={DEFAULT_OPTION.value}
-                key={option.value}
-                value={option.value}
-              >
+              <option key={option.value} value={option.value}>
                 {option.displayLabel}
               </option>
             ))}
@@ -135,6 +159,7 @@ const NewProfile = () => {
                   <Controller
                     name="english"
                     control={control}
+                    rules={{ required: true }}
                     render={({
                       field: { onChange, onBlur, value, ...rest },
                     }) => (
@@ -157,6 +182,55 @@ const NewProfile = () => {
           </div>
         </div>
 
+        <div className="form-control max-w-sm flex gap-4">
+          <label className="text-sm font-semibold">Employment type</label>
+          <div>
+            {EMPLOYEMENT_TYPES.map((opt, i) => (
+              <div key={opt.value} className="form-control items-start">
+                <label
+                  htmlFor={`field-${opt.value}`}
+                  className="label cursor-pointer gap-4"
+                >
+                  <input
+                    id={`field-${opt.value}`}
+                    type="checkbox"
+                    className="checkbox"
+                    value={opt.value}
+                    {...register(`employementType[${i}]`, {
+                      required: true,
+                    })}
+                  />
+                  <span className="label-text">{opt.displayLabel}</span>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="form-control max-w-sm flex gap-4">
+          <label className="text-sm font-semibold">Skills</label>
+          <Controller
+            control={control}
+            name="skills"
+            render={({ field: { onChange } }) => (
+              <MultipleComboBox initialItems={SKILLS} onChange={onChange} />
+            )}
+          />
+        </div>
+        <div className="form-control max-w-sm flex gap-4">
+          <label className="text-sm font-semibold">
+            Tell about your work experience
+          </label>
+          <textarea
+            className="textarea textarea-bordered"
+            rows={5}
+            {...register('details')}
+          ></textarea>
+          <p className="text-xs text-gray-600">
+            Tell about projects and tasks you have completed, what technologies
+            you have used, your current role in the team, and what you want to
+            improve
+          </p>
+        </div>
         <button type="submit" className="btn btn-primary max-w-sm">
           Mint
         </button>

@@ -27,8 +27,11 @@ contract Candidate is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     _setTokenURI(tokenId, uri);
   }
 
-  // The following functions are overrides required by Solidity.
+  function _baseURI() internal pure override returns (string memory) {
+    return 'ipfs://';
+  }
 
+  // The following functions are overrides required by Solidity.
   function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
     super._burn(tokenId);
   }

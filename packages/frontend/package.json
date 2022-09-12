@@ -6,7 +6,9 @@
     "start": "vite",
     "build": "cross-env NODE_ENV=production vite build",
     "pretty": "prettier --check src",
-    "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src"
+    "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src",
+    "ucan-keypair-new": "ucan-storage keypair",
+    "ucan-keypair-from": "source .env && ucan-storage keypair --from $UCAN_PK"
   },
   "browserslist": {
     "production": [
@@ -26,10 +28,13 @@
     "@tailwindcss/typography": "^0.5.7",
     "@vitejs/plugin-react": "^2.0.1",
     "daisyui": "^2.24.0",
+    "downshift": "^6.1.9",
     "ethers": "^5.7.0",
+    "nft.storage": "^7.0.0",
     "preact": "^10.10.6",
     "react-hook-form": "^7.34.2",
     "react-router-dom": "6",
+    "ucan-storage": "^1.3.0",
     "wagmi": "^0.6.4"
   },
   "devDependencies": {
