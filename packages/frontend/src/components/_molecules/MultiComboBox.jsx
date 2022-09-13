@@ -12,12 +12,16 @@ function getFilteredValues(selectedItems, inputValue, allItems) {
   });
 }
 
-const MultipleComboBox = ({ initialItems, onChange }) => {
+const MultipleComboBox = ({
+  initialAllItems,
+  initialSelectedItems = [],
+  onChange,
+}) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
   const items = useMemo(
-    () => getFilteredValues(selectedItems, inputValue, initialItems),
-    [selectedItems, inputValue, initialItems]
+    () => getFilteredValues(selectedItems, inputValue, initialAllItems),
+    [selectedItems, inputValue, initialAllItems]
   );
   const {
     getSelectedItemProps,
@@ -111,7 +115,7 @@ const MultipleComboBox = ({ initialItems, onChange }) => {
           ) {
             return (
               <span
-                className="bg-gray-100 rounded-md px-2 py-1 focus:bg-gray-200"
+                className="bg-gray-100 rounded-md px-2 py-1 focus:bg-gray-200 text-sm"
                 key={`selected-item-${index}`}
                 {...getSelectedItemProps({
                   selectedItem: selectedItemForRender,
@@ -143,7 +147,7 @@ const MultipleComboBox = ({ initialItems, onChange }) => {
       </div>
       <ul
         {...getMenuProps()}
-        className="absolute p-0 bg-white shadow-md max-h-80 overflow-scroll w-inherit"
+        className="absolute p-0 bg-white shadow-md max-h-80 overflow-scroll w-inherit rounded-md m-2"
       >
         {isOpen &&
           items.map((item, index) => (
@@ -165,8 +169,9 @@ const MultipleComboBox = ({ initialItems, onChange }) => {
 };
 
 MultipleComboBox.propTypes = {
-  initialItems: arrayOf(string).isRequired,
-  onChange: func,
+  initialAllItems: arrayOf(string).isRequired,
+  initialSelectedItems: arrayOf(string),
+  onChange: func.isRequired,
 };
 
 export default MultipleComboBox;

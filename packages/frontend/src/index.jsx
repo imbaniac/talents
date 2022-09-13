@@ -5,9 +5,12 @@ import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { WagmiConfig, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { render } from 'preact';
+
 import App from './App';
-import NewProfile from './components/NewProfile';
-import Welcome from './components/Welcome';
+import MintProfile from './pages/MintProfile';
+import NewProfile from './pages/NewProfile';
+import ScrollToTop from './components/ScrollToTop';
+import Welcome from './pages/Welcome';
 
 const { chains, provider } = configureChains(
   [
@@ -38,10 +41,14 @@ render(
   <WagmiConfig client={wagmiClient}>
     <RainbowKitProvider chains={chains}>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Welcome />} />
-            <Route path="profile/new" element={<NewProfile />} />
+            <Route path="profile">
+              <Route path="new" element={<NewProfile />} />
+              <Route path="mint" element={<MintProfile />} />
+            </Route>
             <Route
               path="*"
               element={
