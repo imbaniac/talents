@@ -46,18 +46,14 @@ const MintProfile = () => {
     },
   });
 
-  const {
-    data,
-    isLoading: isCreateProfileLoading,
-    isSuccess,
-    write,
-  } = useContractWrite({
+  const { data, isSuccess, write } = useContractWrite({
     ...config,
     onSuccess(data) {
       addRecentTransaction({
         hash: data.hash,
         description: 'Minting profile',
       });
+      navigate('/inbox');
     },
   });
 
@@ -170,35 +166,15 @@ const MintProfile = () => {
             htmlFor="mint-profile-modal"
             type="submit"
             onClick={handleMint}
-            className="btn btn-primary modal-button w-full"
+            className={`btn btn-primary modal-button w-full ${
+              isIpfsLoading ? 'loading' : ''
+            }`}
           >
             Mint
           </label>
         </div>
       </div>
       <input type="checkbox" id="mint-profile-modal" className="modal-toggle" />
-      <div className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Minting</h3>
-          <p className="py-4">
-            Wait until transaction if completed. Once NFT is minted — you'll be
-            redirected to your home page.
-          </p>
-          <progress className="progress w-full"></progress>
-          {isIpfsLoading && <span className="text-xs">Loading to IPFS...</span>}
-          {isCreateProfileLoading && (
-            <span className="text-xs">
-              Waiting for transaction to be mined...
-            </span>
-          )}
-
-          <div className="modal-action">
-            <label htmlFor="mint-profile-modal" className="btn">
-              Close
-            </label>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { ReactComponent as Company } from '../assets/company.svg';
 import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
@@ -10,12 +11,23 @@ const Welcome = () => {
         openings, <br />
         you can wait for a long time.
       </p>
-      <button
-        onClick={() => navigate('/profile/new')}
-        className="mt-8 btn btn-primary"
-      >
-        Create profile
-      </button>
+
+      <Company className="my-16 w-[200px] h-[200px]" />
+
+      <div className="flex gap-8">
+        <button
+          onClick={() => navigate('/profile/new')}
+          className="btn btn-primary btn-outline"
+        >
+          Find talent
+        </button>
+        <button
+          onClick={() => navigate('/profile/new')}
+          className="btn btn-secondary btn-outline"
+        >
+          Find job
+        </button>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
 import preact from '@preact/preset-vite';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   plugins: [
@@ -14,6 +15,7 @@ export default defineConfig({
         { find: 'react/jsx-runtime', replacement: 'preact/jsx-runtime' },
       ],
     }),
+    svgr(),
   ],
   build: {
     rollupOptions: {
