@@ -5,6 +5,7 @@ import {
   useNetwork,
   usePrepareContractWrite,
 } from 'wagmi';
+import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +22,10 @@ import contracts from '../contracts/hardhat_contracts.json';
 
 const MintProfile = () => {
   const navigate = useNavigate();
+  const addRecentTransaction = useAddRecentTransaction();
+
   const newProfileForm = useStore((state) => state.newProfileForm);
+
   const [ipfsCID, setIpfsCID] = useState('');
   const [isIpfsLoading, setIpfsLoading] = useState(false);
 
@@ -35,6 +39,7 @@ const MintProfile = () => {
     contractInterface: CandidateContract.abi,
     functionName: 'createCandidate',
     enabled: address && ipfsCID,
+    chainId: chain.id,
     args: [address, ipfsCID],
     overrides: {
       gasLimit: 200000,
@@ -46,7 +51,15 @@ const MintProfile = () => {
     isLoading: isCreateProfileLoading,
     isSuccess,
     write,
-  } = useContractWrite(config);
+  } = useContractWrite({
+    ...config,
+    onSuccess(data) {
+      addRecentTransaction({
+        hash: data.hash,
+        description: 'Minting profile',
+      });
+    },
+  });
 
   const handleMint = async () => {
     const nftData = {

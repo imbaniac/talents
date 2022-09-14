@@ -7,6 +7,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { render } from 'preact';
 
 import App from './App';
+import Inbox from './pages/Inbox';
 import MintProfile from './pages/MintProfile';
 import NewProfile from './pages/NewProfile';
 import ScrollToTop from './components/ScrollToTop';
@@ -39,7 +40,7 @@ const wagmiClient = createClient({
 
 render(
   <WagmiConfig client={wagmiClient}>
-    <RainbowKitProvider chains={chains}>
+    <RainbowKitProvider chains={chains} showRecentTransactions>
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
@@ -49,6 +50,7 @@ render(
               <Route path="new" element={<NewProfile />} />
               <Route path="mint" element={<MintProfile />} />
             </Route>
+            <Route path="inbox" element={<Inbox />} />
             <Route
               path="*"
               element={

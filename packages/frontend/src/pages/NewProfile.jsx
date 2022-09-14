@@ -149,7 +149,7 @@ const NewProfile = () => {
         <div className="form-control flex gap-4">
           <label className="text-sm font-semibold">Employment type</label>
           <div>
-            {EMPLOYMENT_TYPES.map((opt, i) => (
+            {EMPLOYMENT_TYPES.map((opt) => (
               <div key={opt.value} className="form-control items-start">
                 <label
                   htmlFor={`field-${opt.value}`}
