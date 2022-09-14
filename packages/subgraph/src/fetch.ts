@@ -1,4 +1,12 @@
-import { Address, BigInt, Bytes, ethereum } from '@graphprotocol/graph-ts';
+import {
+  Address,
+  BigInt,
+  Bytes,
+  ethereum,
+  ipfs,
+  json,
+  log,
+} from '@graphprotocol/graph-ts';
 
 import { Account, ERC721Contract, Profile } from '../generated/schema';
 
@@ -93,6 +101,76 @@ export function fetchERC721Token(
       let erc721 = Candidate.bind(Address.fromBytes(contract.id));
       let try_tokenURI = erc721.try_tokenURI(identifier);
       token.uri = try_tokenURI.reverted ? '' : try_tokenURI.value;
+
+      // Fetch IPFS data
+      const CID = token.uri.split('://')[1];
+      log.info('IPFS CID: {}', [CID]);
+
+      const metadata = ipfs.cat(CID);
+      if (metadata) {
+        const value = json.fromBytes(metadata).toObject();
+        if (value) {
+          const profileProperties = value.get('properties');
+          if (profileProperties) {
+            const profilePropertiesJson = profileProperties.toObject();
+
+            const position = profilePropertiesJson.get('position');
+            if (position) {
+              token.position = position.toString();
+            }
+
+            const category = profilePropertiesJson.get('category');
+            if (category) {
+              token.category = category.toString();
+            }
+
+            const country = profilePropertiesJson.get('country');
+            if (country) {
+              token.country = country.toString();
+            }
+
+            const experience = profilePropertiesJson.get('experience');
+            if (experience) {
+              token.experience = experience.toBigInt();
+            }
+
+            const english = profilePropertiesJson.get('english');
+            if (english) {
+              token.english = english.toString();
+            }
+
+            const employmentTypes =
+              profilePropertiesJson.get('employmentTypes');
+
+            if (employmentTypes) {
+              const employmentTypesArray = employmentTypes.toArray();
+              // EmploymentTypes type in Graph is Array<string> | null, while IPFS returns Array<string>
+              const employmentTypesTemp: Array<string> = [];
+              for (let i = 0; i < employmentTypesArray.length; i++) {
+                employmentTypesTemp.push(employmentTypesArray[i].toString());
+              }
+              token.employmentTypes = employmentTypesTemp;
+            }
+
+            const skills = profilePropertiesJson.get('skills');
+
+            if (skills) {
+              const skillsArray = skills.toArray();
+              // Skills type in Graph is Array<string> | null, while IPFS returns Array<string>
+              const skillsTemp: Array<string> = [];
+              for (let i = 0; i < skillsArray.length; i++) {
+                skillsTemp.push(skillsArray[i].toString());
+              }
+              token.skills = skillsTemp;
+            }
+
+            const details = profilePropertiesJson.get('details');
+            if (details) {
+              token.details = details.toString();
+            }
+          }
+        }
+      }
     }
   }
 

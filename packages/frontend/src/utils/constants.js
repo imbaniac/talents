@@ -6,63 +6,63 @@ export const DEFAULT_OPTION = {
 
 export const EXPERIENCE_GRADE = [
   {
-    value: '0',
+    value: 0,
     displayLabel: 'No work experience',
   },
   {
-    value: '6',
+    value: 6,
     displayLabel: '6 months',
   },
   {
-    value: '12',
+    value: 12,
     displayLabel: '1 year',
   },
   {
-    value: '18',
+    value: 18,
     displayLabel: '1.5 years',
   },
   {
-    value: '24',
+    value: 24,
     displayLabel: '2 years',
   },
   {
-    value: '30',
+    value: 30,
     displayLabel: '2.5 years',
   },
   {
-    value: '36',
+    value: 36,
     displayLabel: '3 years',
   },
   {
-    value: '48',
+    value: 48,
     displayLabel: '4 years',
   },
   {
-    value: '60',
+    value: 60,
     displayLabel: '5 years',
   },
   {
-    value: '72',
+    value: 72,
     displayLabel: '6 years',
   },
   {
-    value: '84',
+    value: 84,
     displayLabel: '7 years',
   },
   {
-    value: '96',
+    value: 96,
     displayLabel: '8 years',
   },
   {
-    value: '108',
+    value: 108,
     displayLabel: '9 years',
   },
   {
-    value: '120',
+    value: 120,
     displayLabel: '10 years',
   },
   {
-    value: 'more',
+    value: 132,
     displayLabel: 'More than 10 years',
   },
 ];

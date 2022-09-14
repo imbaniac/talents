@@ -1,3 +1,4 @@
+import { log } from '@graphprotocol/graph-ts';
 import { Transfer as TransferEvent } from '../generated/Candidate/Candidate';
 import { fetchAccount, fetchERC721, fetchERC721Token } from './fetch';
 // import { ERC721Transfer } from '../generated/schema';
@@ -9,11 +10,16 @@ export function handleTransfer(event: TransferEvent): void {
     let from = fetchAccount(event.params.from);
     let to = fetchAccount(event.params.to);
 
+    token.createdAt = event.block.timestamp;
     token.owner = to.id;
     // token.approval = fetchAccount(Address.zero()).id; // implicit approval reset on transfer
 
-    contract.save();
-    token.save();
+    if (token.position) {
+      contract.save();
+      token.save();
+    } else {
+      log.info('NOT SAVED TOKEN {} WITH URI {}', [token.id, token.uri]);
+    }
 
     // let ev = new ERC721Transfer(events.id(event));
     // ev.emitter = contract.id;

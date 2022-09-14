@@ -1,5 +1,8 @@
 specVersion: 0.0.4
 description: Subgraph for getting all Candidates
+features:
+  - ipfsOnEthereumContracts
+  - nonDeterministicIpfs
 schema:
   file: ./src/schema.graphql
 dataSources:

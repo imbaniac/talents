@@ -41,7 +41,18 @@ type Profile @entity {
   contract: ERC721Contract!
   identifier: BigInt!
   owner: Account!
-  uri: String
+  uri: String!
+  createdAt: BigInt!
+
+  # IPFS data
+  position: String!
+  category: String!
+  country: String
+  experience: BigInt!
+  english: String!
+  employmentTypes: [String!]!
+  skills: [String!]
+  details: String
   # transfers: [ERC721Transfer!]! @derivedFrom(field: "token")
 }
 

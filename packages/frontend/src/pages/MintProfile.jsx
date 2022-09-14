@@ -28,7 +28,7 @@ const MintProfile = () => {
   const { chain } = useNetwork();
   const { address } = useAccount();
 
-  const CandidateContract = contracts[chain.id]?.[0].contracts.Candidate || {};
+  const CandidateContract = contracts[chain?.id]?.[0].contracts.Candidate || {};
 
   const { config } = usePrepareContractWrite({
     addressOrName: CandidateContract.address,
