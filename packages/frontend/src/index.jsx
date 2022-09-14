@@ -8,6 +8,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { render } from 'preact';
 
 import App from './App';
+import CandidateProfile from './pages/CandidateProfile';
 import CandidatesList from './pages/CandidatesList';
 import Inbox from './pages/Inbox';
 import MintProfile from './pages/MintProfile';
@@ -56,6 +57,10 @@ render(
               <Route path="profile">
                 <Route path="new" element={<NewProfile />} />
                 <Route path="mint" element={<MintProfile />} />
+                <Route
+                  path=":contractAddress/:tokenId"
+                  element={<CandidateProfile />}
+                />
               </Route>
               <Route path="candidates" element={<CandidatesList />} />
               <Route path="inbox" element={<Inbox />} />

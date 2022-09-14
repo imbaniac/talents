@@ -16,7 +16,7 @@ const Welcome = () => {
 
       <div className="flex gap-8">
         <button
-          onClick={() => navigate('/profile/new')}
+          onClick={() => navigate('/candidates')}
           className="btn btn-primary btn-outline"
         >
           Find talent

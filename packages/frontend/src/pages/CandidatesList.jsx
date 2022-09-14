@@ -10,20 +10,15 @@ import {
 const ProfilesQuery = `
   query {
     profiles (orderBy:identifier, orderDirection: desc) {
-      owner {
-        id
-      }
     	id
       identifier
     	createdAt
     
       position
       country
-      category
       skills
       experience
       english
-      employmentTypes
       details
     }
   }
@@ -51,7 +46,7 @@ const CandidatesList = () => {
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
                 <h1 className="text-xl font-bold btn-link">
-                  <Link to="/profile/mint">{profile.position}</Link>
+                  <Link to={`/profile/${profile.id}`}>{profile.position}</Link>
                 </h1>
                 <div className="flex text-gray-500 text-sm">
                   <span>{displayCountry(profile.country)}</span>
