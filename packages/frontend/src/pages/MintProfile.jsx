@@ -98,7 +98,7 @@ const MintProfile = () => {
   }
 
   return (
-    <div className="container mt-16 mx-auto max-w-xl px-8 pb-8">
+    <div className="container mt-16 mx-auto max-w-2xl px-8 pb-8">
       <div className="alert">
         <div>
           <svg

@@ -29,4 +29,12 @@ export default defineConfig({
       ],
     },
   },
+  server: {
+    proxy: {
+      '/subgraphs': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+      },
+    },
+  },
 });

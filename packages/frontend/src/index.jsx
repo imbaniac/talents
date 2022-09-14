@@ -1,12 +1,14 @@
 import './index.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Provider, createClient as createGraphqlClient } from 'urql';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { WagmiConfig, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { render } from 'preact';
 
 import App from './App';
+import CandidatesList from './pages/CandidatesList';
 import Inbox from './pages/Inbox';
 import MintProfile from './pages/MintProfile';
 import NewProfile from './pages/NewProfile';
@@ -38,30 +40,37 @@ const wagmiClient = createClient({
   provider,
 });
 
+const graphqlClient = createGraphqlClient({
+  url: '/subgraphs/name/talents-eth/candidate',
+});
+
 render(
   <WagmiConfig client={wagmiClient}>
     <RainbowKitProvider chains={chains} showRecentTransactions>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<App />}>
-            <Route index element={<Welcome />} />
-            <Route path="profile">
-              <Route path="new" element={<NewProfile />} />
-              <Route path="mint" element={<MintProfile />} />
+      <Provider value={graphqlClient}>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<App />}>
+              <Route index element={<Welcome />} />
+              <Route path="profile">
+                <Route path="new" element={<NewProfile />} />
+                <Route path="mint" element={<MintProfile />} />
+              </Route>
+              <Route path="candidates" element={<CandidatesList />} />
+              <Route path="inbox" element={<Inbox />} />
+              <Route
+                path="*"
+                element={
+                  <main style={{ padding: '1rem' }}>
+                    <p>There is nothing here!</p>
+                  </main>
+                }
+              />
             </Route>
-            <Route path="inbox" element={<Inbox />} />
-            <Route
-              path="*"
-              element={
-                <main style={{ padding: '1rem' }}>
-                  <p>There is nothing here!</p>
-                </main>
-              }
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
     </RainbowKitProvider>
   </WagmiConfig>,
   document.getElementById('root')

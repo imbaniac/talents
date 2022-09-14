@@ -51,7 +51,7 @@ const NewProfile = () => {
   const experienceLabel = EXPERIENCE_GRADE[experienceValue]?.displayLabel;
 
   return (
-    <div className="container max-w-xl mt-16 mx-auto px-8 pb-8">
+    <div className="container max-w-2xl mt-16 mx-auto px-8 pb-8">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="text-3xl font-bold">New Profile</h1>
         <div className="form-control flex gap-4">

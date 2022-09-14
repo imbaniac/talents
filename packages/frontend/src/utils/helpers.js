@@ -6,7 +6,7 @@ import {
 } from './constants';
 
 export const displayExperience = (value) => {
-  return EXPERIENCE_GRADE.find((opt) => opt.value === value).displayLabel;
+  return EXPERIENCE_GRADE.find((opt) => opt.value == value).displayLabel;
 };
 
 export const displayEnglish = (value) => {

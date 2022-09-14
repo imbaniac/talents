@@ -29,6 +29,9 @@ const Navbar = () => {
             <li>
               <Link to="inbox">Inbox</Link>
             </li>
+            <li>
+              <Link to="candidates">Candidates</Link>
+            </li>
           </ul>
         </div>
         <Link to="/" className="btn btn-ghost normal-case text-xl">
@@ -36,10 +39,15 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-end">
-        <ul className="menu menu-horizontal p-0 mr-4 hidden lg:flex">
+        <ul className="menu menu-horizontal p-0 gap-4 mr-4 hidden lg:flex">
           <li>
             <Link className="btn btn-outline" to="inbox">
               Inbox
+            </Link>
+          </li>
+          <li>
+            <Link className="btn btn-outline" to="candidates">
+              Candidates
             </Link>
           </li>
         </ul>
