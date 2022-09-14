@@ -41,12 +41,12 @@ const Navbar = () => {
       <div className="navbar-end">
         <ul className="menu menu-horizontal p-0 gap-4 mr-4 hidden lg:flex">
           <li>
-            <Link className="btn btn-outline" to="inbox">
+            <Link className="btn btn-ghost" to="inbox">
               Inbox
             </Link>
           </li>
           <li>
-            <Link className="btn btn-outline" to="candidates">
+            <Link className="btn btn-ghost" to="candidates">
               Candidates
             </Link>
           </li>

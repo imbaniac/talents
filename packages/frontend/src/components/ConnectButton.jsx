@@ -38,7 +38,7 @@ const ConnectButton = ({ className }) => {
               if (!connected) {
                 return (
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-prmary"
                     onClick={openConnectModal}
                     type="button"
                   >
@@ -63,10 +63,10 @@ const ConnectButton = ({ className }) => {
                 <div style={{ display: 'flex', gap: 12 }}>
                   <button
                     onClick={openChainModal}
-                    className="btn"
+                    className="btn btn-outline btn-accent"
                     type="button"
                   >
-                    {chain.hasIcon && (
+                    {/* {chain.hasIcon && (
                       <div
                         style={{
                           background: chain.iconBackground,
@@ -85,7 +85,7 @@ const ConnectButton = ({ className }) => {
                           />
                         )}
                       </div>
-                    )}
+                    )} */}
                     {chain.name}
                   </button>
 
