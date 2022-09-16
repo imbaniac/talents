@@ -20,7 +20,7 @@ describe('Talents DAPP', function () {
     describe('createCandidate()', () => {
       it('I should mint to myself and others', async () => {
         const [owner, other1] = await ethers.getSigners();
-        const testUri = 'https://google.com';
+        const testUri = 'google.com';
         await candidate.createCandidate(owner.address, testUri + '/1');
         await candidate.createCandidate(other1.address, testUri + '/2');
 
@@ -44,13 +44,17 @@ describe('Talents DAPP', function () {
         expect(await candidate.balanceOf(owner.address)).to.equal(1);
         expect(await candidate.balanceOf(other1.address)).to.equal(1);
 
-        expect(await candidate.tokenURI(myTokenId)).to.equal(testUri + '/1');
-        expect(await candidate.tokenURI(otherTokenId)).to.equal(testUri + '/2');
+        expect(await candidate.tokenURI(myTokenId)).to.equal(
+          'ipfs://' + testUri + '/1'
+        );
+        expect(await candidate.tokenURI(otherTokenId)).to.equal(
+          'ipfs://' + testUri + '/2'
+        );
       });
 
       it('Other accounts should be able to mint for themself', async () => {
         const [, , other2] = await ethers.getSigners();
-        const testUri = 'https://google.com';
+        const testUri = 'google.com';
         const candidateForAnotherAccount = candidate.connect(other2);
         await candidateForAnotherAccount.createCandidate(
           other2.address,
@@ -70,13 +74,13 @@ describe('Talents DAPP', function () {
           await candidateForAnotherAccount.balanceOf(other2.address)
         ).to.equal(1);
         expect(await candidateForAnotherAccount.tokenURI(tokenId)).to.equal(
-          testUri
+          'ipfs://' + testUri
         );
       });
 
       it("Other accounts shouldn't be able to mint for others", async () => {
         const [, , other2, other3] = await ethers.getSigners();
-        const testUri = 'https://google.com';
+        const testUri = 'google.com';
         const candidateForAnotherAccount = candidate.connect(other2);
         expect(
           candidateForAnotherAccount.createCandidate(other3.address, testUri)
