@@ -17,12 +17,12 @@ describe('Talents DAPP', function () {
       expect(await candidate.name()).to.equal('Candidate');
     });
 
-    describe('createCandidate()', () => {
-      it('I should mint to myself and others', async () => {
+    describe('mintProfile()', () => {
+      it('Owner should mint to itself and others', async () => {
         const [owner, other1] = await ethers.getSigners();
         const testUri = 'google.com';
-        await candidate.createCandidate(owner.address, testUri + '/1');
-        await candidate.createCandidate(other1.address, testUri + '/2');
+        await candidate.mintProfile(owner.address, testUri + '/1');
+        await candidate.mintProfile(other1.address, testUri + '/2');
 
         const myLogs = await candidate.queryFilter(
           candidate.filters.Transfer(
@@ -52,14 +52,11 @@ describe('Talents DAPP', function () {
         );
       });
 
-      it('Other accounts should be able to mint for themself', async () => {
+      it('Users should be able to mint for themself', async () => {
         const [, , other2] = await ethers.getSigners();
         const testUri = 'google.com';
         const candidateForAnotherAccount = candidate.connect(other2);
-        await candidateForAnotherAccount.createCandidate(
-          other2.address,
-          testUri
-        );
+        await candidateForAnotherAccount.mintProfile(other2.address, testUri);
 
         const logs = await candidateForAnotherAccount.queryFilter(
           candidateForAnotherAccount.filters.Transfer(
@@ -78,18 +75,18 @@ describe('Talents DAPP', function () {
         );
       });
 
-      it("Other accounts shouldn't be able to mint for others", async () => {
+      it("Users shouldn't be able to mint for others", async () => {
         const [, , other2, other3] = await ethers.getSigners();
         const testUri = 'google.com';
         const candidateForAnotherAccount = candidate.connect(other2);
-        expect(
-          candidateForAnotherAccount.createCandidate(other3.address, testUri)
+        await expect(
+          candidateForAnotherAccount.mintProfile(other3.address, testUri)
         ).to.be.revertedWith('You can mint only for yourself');
       });
     });
 
     describe('Transfers', () => {
-      it("Other accounts shouldn't be able to transferFrom() Candidate NFT", async () => {
+      it("Users shouldn't be able to transferFrom() Candidate NFT", async () => {
         const [, other1, other2] = await ethers.getSigners();
         const candidateForAnotherAccount = candidate.connect(other1);
 
@@ -112,7 +109,7 @@ describe('Talents DAPP', function () {
         ).to.be.revertedWith('Err: token is SOUL BOUND');
       });
 
-      it("Other accounts shouldn't be able to safeTransferFrom() Candidate NFT", async () => {
+      it("Users shouldn't be able to safeTransferFrom() Candidate NFT", async () => {
         const [, other1, other2] = await ethers.getSigners();
         const candidateForAnotherAccount = candidate.connect(other1);
 

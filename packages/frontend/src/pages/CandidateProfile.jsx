@@ -1,3 +1,15 @@
+import { NFTStorage } from 'nft.storage';
+import {
+  useAccount,
+  useContractWrite,
+  useNetwork,
+  usePrepareContractWrite,
+} from 'wagmi';
+import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from 'urql';
+
 import { EMPLOYMENT_TYPES } from '../utils/constants';
 import {
   displayCountry,
@@ -5,8 +17,7 @@ import {
   displayExperience,
   getEmoji,
 } from '../utils/helpers';
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'urql';
+import contracts from '../contracts/hardhat_contracts.json';
 
 const ProfileQuery = `
   query($id: String!) {
@@ -36,7 +47,69 @@ const CandidateProfile = () => {
     variables: { id: `${params.contractAddress}/${params.tokenId}` },
   });
 
+  const [message, setMessage] = useState('');
+  const [ipfsCID, setIpfsCID] = useState('');
+  const [isIpfsLoading, setIpfsLoading] = useState(false);
+
+  const addRecentTransaction = useAddRecentTransaction();
+
+  const { chain } = useNetwork();
+  const { address } = useAccount();
+
+  const ProposalContract = contracts[chain?.id]?.[0].contracts.Proposal || {};
+
+  const { config } = usePrepareContractWrite({
+    addressOrName: ProposalContract.address,
+    contractInterface: ProposalContract.abi,
+    functionName: 'mintProposal',
+    enabled: address && ipfsCID,
+    chainId: chain?.id,
+    args: [params.tokenId, ipfsCID],
+    overrides: {
+      gasLimit: 200000,
+    },
+  });
+
+  const { write } = useContractWrite({
+    ...config,
+    onSuccess(data) {
+      addRecentTransaction({
+        hash: data.hash,
+        description: 'Minting proposal',
+      });
+    },
+  });
+
   const profile = result.data?.profile;
+
+  const handleMint = async () => {
+    const nftData = {
+      name: 'Proposal',
+      description: `Message from ${address} to candidate ${profile.owner.id}`,
+      properties: { encryptedMessage: message },
+    };
+
+    setIpfsLoading(true);
+
+    const blobData = new Blob([JSON.stringify(nftData)], {
+      type: 'application/json',
+    });
+
+    const nftstorage = new NFTStorage({
+      token: import.meta.env.VITE_NFT_STORAGE_KEY,
+    });
+    const CID = await nftstorage.storeBlob(blobData);
+    console.log('Saved on IPFS as address: ', CID);
+    setIpfsCID(CID);
+    setIpfsLoading(false);
+  };
+
+  useEffect(() => {
+    if (write) {
+      write();
+      setIpfsCID(null);
+    }
+  }, [write]);
 
   if (!profile) {
     return null;
@@ -81,15 +154,21 @@ const CandidateProfile = () => {
       <div className="flex flex-col gap-4">
         <textarea
           rows={5}
+          onChange={(e) => setMessage(e.target.value)}
           className="textarea textarea-bordered"
           placeholder={`Hello, I'm Johnas Embedded from Pessimism Foundation.
 You look like a fit for our blockchain startup. Let's hop on a call and discuss details.`}
         ></textarea>
         <p className="text-xs text-gray-600">
-          Briefly describe proposition. Candidate will see your name, title and
-          company details fetched from your profile.
+          Briefly describe your proposition. Candidate will see your name, title
+          and company details fetched from your company profile.
         </p>
-        <button className="btn btn-primary">Send proposition</button>
+        <button
+          className={`btn btn-primary ${isIpfsLoading ? 'loading' : ''}`}
+          onClick={handleMint}
+        >
+          Send a proposal
+        </button>
       </div>
     </div>
   );

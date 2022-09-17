@@ -37,7 +37,7 @@ const MintProfile = () => {
   const { config } = usePrepareContractWrite({
     addressOrName: CandidateContract.address,
     contractInterface: CandidateContract.abi,
-    functionName: 'createCandidate',
+    functionName: 'mintProfile',
     enabled: address && ipfsCID,
     chainId: chain.id,
     args: [address, ipfsCID],
@@ -174,7 +174,6 @@ const MintProfile = () => {
           </label>
         </div>
       </div>
-      <input type="checkbox" id="mint-profile-modal" className="modal-toggle" />
     </div>
   );
 };

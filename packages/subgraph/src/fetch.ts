@@ -8,9 +8,15 @@ import {
   log,
 } from '@graphprotocol/graph-ts';
 
-import { Account, ERC721Contract, Profile } from '../generated/schema';
+import {
+  Account,
+  ERC721Contract,
+  Profile,
+  Proposal,
+} from '../generated/schema';
 
-import { Candidate } from '../generated/Candidate/Candidate';
+import { Candidate as CandidateContract } from '../generated/Candidate/Candidate';
+import { Proposal as ProposalContract } from '../generated/Proposal/Proposal';
 
 export function supportsInterface(
   contract: ethereum.SmartContract,
@@ -34,13 +40,16 @@ export function supportsInterface(
 }
 
 export function fetchAccount(address: Address): Account {
-  let account = new Account(address);
-  account.save();
+  let account = Account.load(address);
+  if (account == null) {
+    account = new Account(address);
+    account.save();
+  }
   return account;
 }
 
 export function fetchERC721(address: Address): ERC721Contract | null {
-  let erc721 = Candidate.bind(address);
+  let erc721 = CandidateContract.bind(address);
 
   // Try load entry
   let contract = ERC721Contract.load(address);
@@ -85,7 +94,7 @@ export function fetchERC721(address: Address): ERC721Contract | null {
   return contract;
 }
 
-export function fetchERC721Token(
+export function fetchProfileToken(
   contract: ERC721Contract,
   identifier: BigInt
 ): Profile {
@@ -98,7 +107,7 @@ export function fetchERC721Token(
     token.identifier = identifier;
 
     if (contract.supportsMetadata) {
-      let erc721 = Candidate.bind(Address.fromBytes(contract.id));
+      let erc721 = CandidateContract.bind(Address.fromBytes(contract.id));
       let try_tokenURI = erc721.try_tokenURI(identifier);
       token.uri = try_tokenURI.reverted ? '' : try_tokenURI.value;
 
@@ -175,4 +184,53 @@ export function fetchERC721Token(
   }
 
   return token as Profile;
+}
+
+export function fetchProposalToken(
+  contract: ERC721Contract,
+  identifier: BigInt
+): Proposal {
+  let id = contract.id.toHex().concat('/').concat(identifier.toHex());
+  let token = Proposal.load(id);
+  let erc721 = ProposalContract.bind(Address.fromBytes(contract.id));
+
+  if (token == null) {
+    token = new Proposal(id);
+    token.contract = contract.id;
+    token.identifier = identifier;
+
+    const try_sender = erc721.try_sender(identifier);
+    const sender = try_sender.reverted ? Address.zero() : try_sender.value;
+
+    log.warning('SOMEHOW I AM HERE Sender is {}', [sender.toHexString()]);
+
+    token.sender = fetchAccount(sender).id;
+
+    if (contract.supportsMetadata) {
+      let try_tokenURI = erc721.try_tokenURI(identifier);
+      token.uri = try_tokenURI.reverted ? '' : try_tokenURI.value;
+
+      // Fetch IPFS data
+      const CID = token.uri.split('://')[1];
+      log.info('IPFS CID: {}', [CID]);
+      const metadata = ipfs.cat(CID);
+      if (metadata) {
+        const value = json.fromBytes(metadata).toObject();
+        if (value) {
+          const proposalProperties = value.get('properties');
+          if (proposalProperties) {
+            const proposalPropertiesJson = proposalProperties.toObject();
+
+            const encryptedMessage =
+              proposalPropertiesJson.get('encryptedMessage');
+            if (encryptedMessage) {
+              token.encryptedMessage = encryptedMessage.toString();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return token as Proposal;
 }

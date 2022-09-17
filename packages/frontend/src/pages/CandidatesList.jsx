@@ -36,7 +36,7 @@ const CandidatesList = () => {
       <h1 className="text-3xl font-bold">
         Candidates{' '}
         <span className="text-gray-400 text-lg">
-          {profiles[0]?.identifier || '0'}
+          {profiles[0] ? +profiles[0].identifier + 1 : 0}
         </span>
       </h1>
       {profiles.map((profile) => (

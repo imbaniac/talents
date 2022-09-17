@@ -20,20 +20,31 @@ const main = async (hre) => {
   console.log('CHAIN ID', chainId);
 
   await deploy('Candidate', {
-    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
-    // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
-    // waitConfirmations: 5,
   });
 
   // Getting a previously deployed contract
   const Candidate = await ethers.getContract('Candidate', deployer);
-  console.log('ADDRESS', Candidate.address);
+  console.log('CANDIDATE NFT ADDRESS', Candidate.address);
+
+  await deploy('Proposal', {
+    from: deployer,
+    log: true,
+    args: [Candidate.address],
+  });
+
+  const Proposal = await ethers.getContract('Proposal', deployer);
+  console.log('PROPOSAL NFT ADDRESS', Proposal.address);
 
   await ethernal.push({
     name: 'Candidate',
     address: Candidate.address,
+  });
+
+  await ethernal.push({
+    name: 'Proposal',
+    address: Proposal.address,
   });
 
   /*  await YourContract.setPurpose("Hello");
@@ -94,4 +105,4 @@ const main = async (hre) => {
 // });
 
 module.exports = main;
-module.exports.tags = ['YourContract'];
+module.exports.tags = ['Candidate', 'Proposal'];

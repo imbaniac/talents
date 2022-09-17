@@ -23,5 +23,26 @@ dataSources:
           file: ./abis/localhost_Candidate.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
+          handler: handleProfileMint
+      file: ./src/mapping.ts
+  - kind: ethereum/contract
+    name: Proposal
+    network: localhost
+    source:
+      abi: Proposal
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Proposal
+      abis:
+        - name: Proposal
+          file: ./abis/localhost_Proposal.json
+        - name: Candidate
+          file: ./abis/localhost_Candidate.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleProposalMint
       file: ./src/mapping.ts

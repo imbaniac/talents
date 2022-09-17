@@ -16,7 +16,7 @@ contract Candidate is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
   constructor() ERC721('Candidate', 'CAN') {}
 
-  function createCandidate(address to, string memory uri) public {
+  function mintProfile(address to, string memory uri) public {
     require(
       msg.sender == to || msg.sender == super.owner(),
       'You can mint only for yourself'
@@ -31,6 +31,15 @@ contract Candidate is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     return 'ipfs://';
   }
 
+  function _beforeTokenTransfer(
+    address from,
+    address to,
+    uint256 tokenId
+  ) internal override(ERC721) {
+    require(from == address(0), 'Err: token is SOUL BOUND');
+    super._beforeTokenTransfer(from, to, tokenId);
+  }
+
   // The following functions are overrides required by Solidity.
   function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
     super._burn(tokenId);
@@ -43,14 +52,5 @@ contract Candidate is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     returns (string memory)
   {
     return super.tokenURI(tokenId);
-  }
-
-  function _beforeTokenTransfer(
-    address from,
-    address to,
-    uint256 tokenId
-  ) internal override(ERC721) {
-    require(from == address(0), 'Err: token is SOUL BOUND');
-    super._beforeTokenTransfer(from, to, tokenId);
   }
 }

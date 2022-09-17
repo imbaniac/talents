@@ -43,6 +43,7 @@ const wagmiClient = createClient({
 
 const graphqlClient = createGraphqlClient({
   url: '/subgraphs/name/talents-eth/candidate',
+  requestPolicy: 'cache-and-network',
 });
 
 render(
