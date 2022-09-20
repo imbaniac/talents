@@ -7,7 +7,7 @@ const PROPOSAL_STATUSES_ENUM = {
   Rejected: 2,
 };
 
-const testEncryptedMessage =
+const testProposalCID =
   'hgblu12enjkjfawdnawhjdb2qh1bjkfbwajkfbawkj213b12jk3dhb2h3b1hj3bjkdwakjdj213b1';
 
 describe('Talents DAPP', function () {
@@ -47,7 +47,7 @@ describe('Talents DAPP', function () {
 
         await proposal
           .connect(other2)
-          .mintProposal(candidateTokenId, testEncryptedMessage);
+          .mintProposal(candidateTokenId, testProposalCID);
 
         const proposalLogs = await proposal.queryFilter(
           proposal.filters.Transfer(
@@ -60,7 +60,7 @@ describe('Talents DAPP', function () {
 
         expect(await proposal.balanceOf(other1.address)).to.equal(1);
         expect(await proposal.tokenURI(proposalTokenId)).to.equal(
-          'ipfs://' + testEncryptedMessage
+          'ipfs://' + testProposalCID
         );
         expect(await proposal.status(proposalTokenId)).to.equal(
           PROPOSAL_STATUSES_ENUM.Pending
@@ -85,7 +85,7 @@ describe('Talents DAPP', function () {
         await expect(
           proposal
             .connect(other1)
-            .mintProposal(candidateTokenId, testEncryptedMessage)
+            .mintProposal(candidateTokenId, testProposalCID)
         ).to.be.revertedWith('Can not mint proposal to myself');
       });
     });
@@ -151,7 +151,7 @@ describe('Talents DAPP', function () {
 
         await proposal
           .connect(other2)
-          .mintProposal(candidateTokenId, testEncryptedMessage);
+          .mintProposal(candidateTokenId, testProposalCID);
 
         const proposalLogs = await proposal.queryFilter(
           proposal.filters.Transfer(
@@ -188,7 +188,7 @@ describe('Talents DAPP', function () {
 
         await proposal
           .connect(other2)
-          .mintProposal(candidateTokenId, testEncryptedMessage);
+          .mintProposal(candidateTokenId, testProposalCID);
 
         const proposalLogs = await proposal.queryFilter(
           proposal.filters.Transfer(
@@ -225,7 +225,7 @@ describe('Talents DAPP', function () {
 
         await proposal
           .connect(other2)
-          .mintProposal(candidateTokenId, testEncryptedMessage);
+          .mintProposal(candidateTokenId, testProposalCID);
 
         const proposalLogs = await proposal.queryFilter(
           proposal.filters.Transfer(

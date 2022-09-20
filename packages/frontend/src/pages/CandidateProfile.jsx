@@ -17,6 +17,7 @@ import {
   displayExperience,
   getEmoji,
 } from '../utils/helpers';
+import { useForm } from 'react-hook-form';
 import contracts from '../contracts/hardhat_contracts.json';
 
 const ProfileQuery = `
@@ -47,7 +48,8 @@ const CandidateProfile = () => {
     variables: { id: `${params.contractAddress}/${params.tokenId}` },
   });
 
-  const [message, setMessage] = useState('');
+  const { register, handleSubmit } = useForm();
+
   const [ipfsCID, setIpfsCID] = useState('');
   const [isIpfsLoading, setIpfsLoading] = useState(false);
 
@@ -82,11 +84,11 @@ const CandidateProfile = () => {
 
   const profile = result.data?.profile;
 
-  const handleMint = async () => {
+  const onSubmit = async (data) => {
     const nftData = {
       name: 'Proposal',
       description: `Message from ${address} to candidate ${profile.owner.id}`,
-      properties: { encryptedMessage: message },
+      properties: data,
     };
 
     setIpfsLoading(true);
@@ -151,25 +153,65 @@ const CandidateProfile = () => {
         </div>
       </div>
       <div className="divider"></div>
-      <div className="flex flex-col gap-4">
-        <textarea
-          rows={5}
-          onChange={(e) => setMessage(e.target.value)}
-          className="textarea textarea-bordered"
-          placeholder={`Hello, I'm Johnas Embedded from Pessimism Foundation.
-You look like a fit for our blockchain startup. Let's hop on a call and discuss details.`}
-        ></textarea>
-        <p className="text-xs text-gray-600">
-          Briefly describe your proposition. Candidate will see your name, title
-          and company details fetched from your company profile.
-        </p>
+      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
+        <h2 className="text-xl font-bold">Contact form</h2>
+        <div className="form-control w-full gap-4">
+          <label className="text-sm font-semibold">Name</label>
+          <input
+            type="text"
+            placeholder="Justin Drake"
+            className="input input-bordered w-full"
+            {...register('name', {
+              required: true,
+            })}
+          />
+        </div>
+        <div className="form-control w-full gap-4">
+          <label className="text-sm font-semibold">Position and Company</label>
+          <label className="input-group">
+            <input
+              type="text"
+              placeholder="Researcher"
+              className="input input-bordered w-full"
+              {...register('position', {
+                required: true,
+              })}
+            />
+            <span>at</span>
+            <input
+              type="text"
+              placeholder="Ethereum Foundation"
+              className="input input-bordered w-full"
+              {...register('company', {
+                required: true,
+              })}
+            />
+          </label>
+        </div>
+        <div className="form-control w-full gap-4">
+          <label className="text-sm font-semibold">
+            Briefly describe your proposition
+          </label>
+          <textarea
+            rows={5}
+            className="textarea textarea-bordered"
+            placeholder={`You look like a fit for our blockchain startup. Would like to discuss details with you.`}
+            {...register('message', {
+              required: true,
+            })}
+          ></textarea>
+          <p className="text-xs text-gray-600">
+            Do not put here any secret information, as it could be seen by
+            anyone.
+          </p>
+        </div>
         <button
+          type="submit"
           className={`btn btn-primary ${isIpfsLoading ? 'loading' : ''}`}
-          onClick={handleMint}
         >
           Send a proposal
         </button>
-      </div>
+      </form>
     </div>
   );
 };

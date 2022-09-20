@@ -36,7 +36,7 @@ export function handleProposalMint(event: TransferEvent): void {
     token.createdAt = event.block.timestamp;
     token.owner = to.id;
 
-    if (token.encryptedMessage) {
+    if (token.message) {
       contract.save();
       token.save();
     } else {

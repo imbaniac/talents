@@ -221,10 +221,24 @@ export function fetchProposalToken(
           if (proposalProperties) {
             const proposalPropertiesJson = proposalProperties.toObject();
 
-            const encryptedMessage =
-              proposalPropertiesJson.get('encryptedMessage');
-            if (encryptedMessage) {
-              token.encryptedMessage = encryptedMessage.toString();
+            const name = proposalPropertiesJson.get('name');
+            if (name) {
+              token.name = name.toString();
+            }
+
+            const position = proposalPropertiesJson.get('position');
+            if (position) {
+              token.position = position.toString();
+            }
+
+            const company = proposalPropertiesJson.get('company');
+            if (company) {
+              token.company = company.toString();
+            }
+
+            const message = proposalPropertiesJson.get('message');
+            if (message) {
+              token.message = message.toString();
             }
           }
         }

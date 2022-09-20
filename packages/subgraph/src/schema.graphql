@@ -44,5 +44,8 @@ type Proposal @entity {
   sender: Account!
 
   #IPFS data
-  encryptedMessage: String!
+  name: String!
+  position: String!
+  company: String!
+  message: String!
 }
