@@ -1,5 +1,9 @@
 import { log } from '@graphprotocol/graph-ts';
-import { Transfer as TransferEvent } from '../generated/Candidate/Candidate';
+import { Transfer as TransferCandidateEvent } from '../generated/Candidate/Candidate';
+import {
+  Transfer as TransferProposalEvent,
+  Response as ResponseProposalEvent,
+} from '../generated/Proposal/Proposal';
 import {
   fetchAccount,
   fetchERC721,
@@ -7,7 +11,7 @@ import {
   fetchProposalToken,
 } from './fetch';
 
-export function handleProfileMint(event: TransferEvent): void {
+export function handleProfileMint(event: TransferCandidateEvent): void {
   let contract = fetchERC721(event.address);
   if (contract != null) {
     let token = fetchProfileToken(contract, event.params.tokenId);
@@ -26,7 +30,7 @@ export function handleProfileMint(event: TransferEvent): void {
   }
 }
 
-export function handleProposalMint(event: TransferEvent): void {
+export function handleProposalMint(event: TransferProposalEvent): void {
   let contract = fetchERC721(event.address);
   if (contract != null) {
     let token = fetchProposalToken(contract, event.params.tokenId);
@@ -42,5 +46,14 @@ export function handleProposalMint(event: TransferEvent): void {
     } else {
       log.info('NOT SAVED PROPOSAL {} WITH URI {}', [token.id, token.uri]);
     }
+  }
+}
+
+export function handleProposalResponse(event: ResponseProposalEvent): void {
+  let contract = fetchERC721(event.address);
+  if (contract != null) {
+    let token = fetchProposalToken(contract, event.params.tokenId);
+    token.status = event.params.status;
+    token.save();
   }
 }

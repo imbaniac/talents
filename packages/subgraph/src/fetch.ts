@@ -6,6 +6,7 @@ import {
   ipfs,
   json,
   log,
+  ByteArray,
 } from '@graphprotocol/graph-ts';
 
 import {
@@ -202,9 +203,16 @@ export function fetchProposalToken(
     const try_sender = erc721.try_sender(identifier);
     const sender = try_sender.reverted ? Address.zero() : try_sender.value;
 
-    log.warning('SOMEHOW I AM HERE Sender is {}', [sender.toHexString()]);
+    log.info('Sender is {}', [sender.toHexString()]);
 
     token.sender = fetchAccount(sender).id;
+
+    const try_status = erc721.try_status(identifier);
+    const status = try_status.reverted ? 0 : try_status.value;
+
+    log.info('Status is {}', [ByteArray.fromI32(status).toHexString()]);
+
+    token.status = status;
 
     if (contract.supportsMetadata) {
       let try_tokenURI = erc721.try_tokenURI(identifier);

@@ -56,7 +56,9 @@ describe('Talents DAPP', function () {
           )
         );
         const proposalTokenId =
-          proposalLogs[0].args[proposalLogs[0].args.length - 1];
+          proposalLogs[proposalLogs.length - 1].args[
+            proposalLogs[proposalLogs.length - 1].args.length - 1
+          ];
 
         expect(await proposal.balanceOf(other1.address)).to.equal(1);
         expect(await proposal.tokenURI(proposalTokenId)).to.equal(
@@ -103,7 +105,7 @@ describe('Talents DAPP', function () {
         );
 
         const lastTokenIdOther1 =
-          logs[logs.length - 1].args[logs[0].args.length - 1];
+          logs[logs.length - 1].args[logs[logs.length - 1].args.length - 1];
 
         await expect(
           proposalForAnotherAccount.transferFrom(
@@ -125,7 +127,8 @@ describe('Talents DAPP', function () {
           )
         );
 
-        const lastTokenId = logs[logs.length - 1].args[logs[0].args.length - 1];
+        const lastTokenId =
+          logs[logs.length - 1].args[logs[logs.length - 1].args.length - 1];
 
         await expect(
           proposalForAnotherAccount[
@@ -160,13 +163,18 @@ describe('Talents DAPP', function () {
           )
         );
         const proposalTokenId =
-          proposalLogs[0].args[proposalLogs[0].args.length - 1];
+          proposalLogs[proposalLogs.length - 1].args[
+            proposalLogs[proposalLogs.length - 1].args.length - 1
+          ];
+        console.log('FIRST STATUS TEST TOKEn ID', proposalTokenId);
 
         await expect(
-          proposal.connect(other1).answerProposal(proposalTokenId, true)
+          proposal
+            .connect(other1)
+            .responseProposal(proposalTokenId, PROPOSAL_STATUSES_ENUM.Accepted)
         )
           .to.emit(proposal, 'Response')
-          .withArgs(proposalTokenId, true);
+          .withArgs(proposalTokenId, PROPOSAL_STATUSES_ENUM.Accepted);
 
         expect(await proposal.status(proposalTokenId)).to.be.equal(
           PROPOSAL_STATUSES_ENUM.Accepted
@@ -197,20 +205,24 @@ describe('Talents DAPP', function () {
           )
         );
         const proposalTokenId =
-          proposalLogs[0].args[proposalLogs[0].args.length - 1];
+          proposalLogs[proposalLogs.length - 1].args[
+            proposalLogs[proposalLogs.length - 1].args.length - 1
+          ];
 
         await expect(
-          proposal.connect(other1).answerProposal(proposalTokenId, false)
+          proposal
+            .connect(other1)
+            .responseProposal(proposalTokenId, PROPOSAL_STATUSES_ENUM.Rejected)
         )
           .to.emit(proposal, 'Response')
-          .withArgs(proposalTokenId, false);
+          .withArgs(proposalTokenId, PROPOSAL_STATUSES_ENUM.Rejected);
 
         expect(await proposal.status(proposalTokenId)).to.be.equal(
           PROPOSAL_STATUSES_ENUM.Rejected
         );
       });
 
-      it("Other users shouldn't be able to answerProposal", async () => {
+      it("Other users shouldn't be able to responseProposal", async () => {
         const [, other1, other2] = await ethers.getSigners();
         await candidate.connect(other1).mintProfile(other1.address, 'cid');
 
@@ -237,7 +249,9 @@ describe('Talents DAPP', function () {
           proposalLogs[0].args[proposalLogs[0].args.length - 1];
 
         await expect(
-          proposal.connect(other2).answerProposal(proposalTokenId, false)
+          proposal
+            .connect(other2)
+            .responseProposal(proposalTokenId, PROPOSAL_STATUSES_ENUM.Rejected)
         ).to.be.revertedWith('Only candidate can accept Proposal');
       });
     });

@@ -45,4 +45,6 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleProposalMint
+        - event: Response(indexed uint256,indexed uint8)
+          handler: handleProposalResponse
       file: ./src/mapping.ts

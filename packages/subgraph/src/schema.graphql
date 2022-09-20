@@ -42,6 +42,7 @@ type Proposal @entity {
   uri: String!
   createdAt: BigInt!
   sender: Account!
+  status: Int!
 
   #IPFS data
   name: String!

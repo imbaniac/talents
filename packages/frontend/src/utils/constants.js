@@ -1,4 +1,9 @@
-// eslint-disable-next-line import/prefer-default-export
+export const PROPOSAL_STATUSES_ENUM = {
+  Pending: 0,
+  Accepted: 1,
+  Rejected: 2,
+};
+
 export const DEFAULT_OPTION = {
   value: 'none',
   displayLabel: 'Choose an option',

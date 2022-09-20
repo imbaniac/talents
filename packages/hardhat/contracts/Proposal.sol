@@ -27,7 +27,7 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     Rejected
   }
 
-  event Response(uint256 indexed tokenId, bool indexed accepted);
+  event Response(uint256 indexed tokenId, Status indexed status);
 
   mapping(uint256 => Status) statuses;
   mapping(uint256 => address) senders;
@@ -48,17 +48,17 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     senders[tokenId] = msg.sender;
   }
 
-  function answerProposal(uint256 tokenId, bool accepted) public {
+  function responseProposal(uint256 tokenId, Status _status) public {
     require(
       super.ownerOf(tokenId) == msg.sender,
       'Only candidate can accept Proposal'
     );
-    if (accepted) {
-      statuses[tokenId] = Status.Accepted;
-    } else {
-      statuses[tokenId] = Status.Rejected;
-    }
-    emit Response(tokenId, accepted);
+    require(
+      statuses[tokenId] == Status.Pending,
+      'Proposal is already answered'
+    );
+    statuses[tokenId] = _status;
+    emit Response(tokenId, _status);
   }
 
   function _baseURI() internal pure override returns (string memory) {

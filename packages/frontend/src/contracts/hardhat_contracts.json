@@ -521,9 +521,9 @@
                 },
                 {
                   "indexed": true,
-                  "internalType": "bool",
-                  "name": "accepted",
-                  "type": "bool"
+                  "internalType": "enum Proposal.Status",
+                  "name": "status",
+                  "type": "uint8"
                 }
               ],
               "name": "Response",
@@ -553,24 +553,6 @@
               ],
               "name": "Transfer",
               "type": "event"
-            },
-            {
-              "inputs": [
-                {
-                  "internalType": "uint256",
-                  "name": "tokenId",
-                  "type": "uint256"
-                },
-                {
-                  "internalType": "bool",
-                  "name": "accepted",
-                  "type": "bool"
-                }
-              ],
-              "name": "answerProposal",
-              "outputs": [],
-              "stateMutability": "nonpayable",
-              "type": "function"
             },
             {
               "inputs": [
@@ -731,6 +713,24 @@
             {
               "inputs": [],
               "name": "renounceOwnership",
+              "outputs": [],
+              "stateMutability": "nonpayable",
+              "type": "function"
+            },
+            {
+              "inputs": [
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum Proposal.Status",
+                  "name": "_status",
+                  "type": "uint8"
+                }
+              ],
+              "name": "responseProposal",
               "outputs": [],
               "stateMutability": "nonpayable",
               "type": "function"
