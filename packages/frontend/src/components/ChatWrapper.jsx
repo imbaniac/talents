@@ -6,7 +6,7 @@ import { useSigner } from 'wagmi';
 import { XmtpContext } from '../contexts/Xmtp';
 import Chat from './Chat';
 
-const SenderChat = ({ proposal }) => {
+const ChatWrapper = ({ proposal, isSender }) => {
   const { data: signer } = useSigner();
 
   const { initClient, client } = useContext(XmtpContext);
@@ -14,11 +14,19 @@ const SenderChat = ({ proposal }) => {
   return (
     <div className="container mt-16 mx-auto max-w-2xl px-8 pb-8">
       <div className="flex flex-col gap-8">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold">
-            Chat with {proposal.profile.position}
-          </h1>
-        </div>
+        {isSender ? (
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl font-bold">
+              Chat with {proposal.profile.position}
+            </h1>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-2">
+            <h1 className="text-3xl font-bold">
+              Chat with {proposal.profile.position}
+            </h1>
+          </div>
+        )}
         <div className="flex bg-base-200 p-4 rounded-2xl gap-4 w-full">
           <div className="avatar placeholder">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-12 h-12">
@@ -37,7 +45,11 @@ const SenderChat = ({ proposal }) => {
         </div>
         <div className="divider m-0"></div>
         {client ? (
-          <Chat recipientWalletAddr={proposal.owner.id} />
+          <Chat
+            recipientWalletAddr={
+              isSender ? proposal.owner.id : proposal.sender.id
+            }
+          />
         ) : (
           <div className="flex justify-center">
             <button
@@ -53,4 +65,4 @@ const SenderChat = ({ proposal }) => {
   );
 };
 
-export default SenderChat;
+export default ChatWrapper;

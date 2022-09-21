@@ -2,8 +2,7 @@ import { useAccount } from 'wagmi';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 
-import ReceiverChat from '../components/ReceiverChat';
-import SenderChat from '../components/SenderChat';
+import ChatWrapper from '../components/ChatWrapper';
 
 const ProposalQuery = `
   query($id: String!) {
@@ -42,13 +41,16 @@ const ProposalChat = () => {
 
   if (!proposal) return;
 
-  if (address.toLocaleLowerCase() === proposal.owner.id) {
-    return <ReceiverChat proposal={proposal} />;
+  const isSender = address.toLocaleLowerCase() === proposal.sender.id;
+
+  if (
+    address.toLocaleLowerCase() !== proposal.owner.id &&
+    address.toLocaleLowerCase() !== proposal.sender.id
+  ) {
+    return null;
   }
-  if (address.toLocaleLowerCase() === proposal.sender.id) {
-    return <SenderChat proposal={proposal} />;
-  }
-  return null;
+
+  return <ChatWrapper proposal={proposal} isSender={isSender} />;
 };
 
 export default ProposalChat;
