@@ -26,3 +26,7 @@ export const displayCountry = (value) => {
 };
 
 export const getEmoji = (bool) => (bool ? `✅` : `⛔️`);
+
+export const checkIfPathIsEns = (address) => {
+  return address.includes('eth');
+};

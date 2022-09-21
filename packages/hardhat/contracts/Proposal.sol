@@ -19,7 +19,7 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
   Counters.Counter private _tokenIdCounter;
 
-  Candidate candidate;
+  Candidate public candidate;
 
   enum Status {
     Pending,
@@ -31,6 +31,7 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
   mapping(uint256 => Status) statuses;
   mapping(uint256 => address) senders;
+  mapping(uint256 => uint256) candidates;
 
   constructor(address candidateAddress) ERC721('Proposal', 'PROPOSAL') {
     candidate = Candidate(candidateAddress);
@@ -44,8 +45,10 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     _tokenIdCounter.increment();
     _safeMint(to, tokenId);
     _setTokenURI(tokenId, uri);
+
     statuses[tokenId] = Status.Pending;
     senders[tokenId] = msg.sender;
+    candidates[tokenId] = candidateTokenId;
   }
 
   function responseProposal(uint256 tokenId, Status _status) public {
@@ -80,6 +83,10 @@ contract Proposal is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
   function sender(uint256 tokenId) public view returns (address) {
     return senders[tokenId];
+  }
+
+  function profile(uint256 tokenId) public view returns (uint256) {
+    return candidates[tokenId];
   }
 
   // The following functions are overrides required by Solidity.

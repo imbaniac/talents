@@ -1,3 +1,4 @@
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
@@ -35,6 +36,20 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
       },
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      // Node.js global to browser globalThis
+      define: {
+        global: 'globalThis',
+      },
+      // Enable esbuild polyfill plugins
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+        }),
+      ],
     },
   },
 });

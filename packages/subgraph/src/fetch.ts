@@ -211,8 +211,26 @@ export function fetchProposalToken(
     const status = try_status.reverted ? 0 : try_status.value;
 
     log.info('Status is {}', [ByteArray.fromI32(status).toHexString()]);
-
     token.status = status;
+
+    const try_profile_id = erc721.try_profile(identifier);
+    const profile_id = try_profile_id.reverted
+      ? new BigInt(0)
+      : try_profile_id.value;
+
+    const candidate_address = erc721.candidate();
+
+    log.info('Profile ID is {}', [profile_id.toString()]);
+    log.info('Candidate contract address is {}', [
+      candidate_address.toHexString(),
+    ]);
+    const profileTokenId = candidate_address
+      .toHex()
+      .concat('/')
+      .concat(profile_id.toHex());
+    // const profileToken = Profile.load(id);
+
+    token.profile = profileTokenId;
 
     if (contract.supportsMetadata) {
       let try_tokenURI = erc721.try_tokenURI(identifier);

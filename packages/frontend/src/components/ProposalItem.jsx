@@ -8,22 +8,24 @@ import {
 } from 'wagmi';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { PROPOSAL_STATUSES_ENUM } from '../utils/constants';
 import contracts from '../contracts/hardhat_contracts.json';
 
-const getBadgeColor = (status) => {
-  switch (status) {
-    case PROPOSAL_STATUSES_ENUM.Pending:
-      return 'badge-info';
-    case PROPOSAL_STATUSES_ENUM.Accepted:
-      return 'badge-success';
-    case PROPOSAL_STATUSES_ENUM.Rejected:
-      return 'badge-error';
-  }
-};
+// const getBadgeColor = (status) => {
+//   switch (status) {
+//     case PROPOSAL_STATUSES_ENUM.Pending:
+//       return 'badge-info';
+//     case PROPOSAL_STATUSES_ENUM.Accepted:
+//       return 'badge-success';
+//     case PROPOSAL_STATUSES_ENUM.Rejected:
+//       return 'badge-error';
+//   }
+// };
 
 const ProposalItem = ({ data }) => {
+  const navigate = useNavigate();
   const { address } = useAccount();
   const { chain } = useNetwork();
   const addRecentTransaction = useAddRecentTransaction();
@@ -109,7 +111,7 @@ const ProposalItem = ({ data }) => {
                 Reject
               </button>
               <button
-                className="btn btn-sm btn-success"
+                className="btn btn-sm"
                 onClick={() => handleResponseProposal(true)}
               >
                 Accept
@@ -117,7 +119,12 @@ const ProposalItem = ({ data }) => {
             </div>
           )}
           {data.status === PROPOSAL_STATUSES_ENUM.Accepted && (
-            <button className="btn btn-sm btn-secondary">Chat</button>
+            <button
+              className="btn btn-sm btn-secondary"
+              onClick={() => navigate(`/chat/${data.id}`)}
+            >
+              Chat
+            </button>
           )}
         </div>
       </div>

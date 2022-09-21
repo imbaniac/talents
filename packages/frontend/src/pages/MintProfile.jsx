@@ -81,10 +81,11 @@ const MintProfile = () => {
   };
 
   useEffect(() => {
-    if (write && !isSuccess && !data) {
+    if (write) {
       write();
+      setIpfsCID(null);
     }
-  }, [write, isSuccess, data]);
+  }, [write]);
 
   useEffect(() => {
     if (!newProfileForm.position) {

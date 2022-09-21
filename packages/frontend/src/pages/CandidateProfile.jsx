@@ -68,7 +68,7 @@ const CandidateProfile = () => {
     chainId: chain?.id,
     args: [params.tokenId, ipfsCID],
     overrides: {
-      gasLimit: 200000,
+      gasLimit: 250000,
     },
   });
 
