@@ -18,6 +18,9 @@ const SenderProposalsQuery = `
       message
       createdAt
       status
+      owner {
+        id
+      }
       profile {
         id
         position

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
-import { useQuery } from 'urql';
 
 import { PROPOSAL_STATUSES_ENUM } from '../utils/constants';
 
@@ -14,7 +13,8 @@ const SenderProposalItem = ({ data }) => {
         To:{' '}
         <Link to={`/profile/${data.profile.id}`} className="link">
           {data.profile.position}
-        </Link>
+        </Link>{' '}
+        <div className="badge">{data.sender.id?.substring(0, 10)}</div>
       </h2>
       <div className="divider m-0"></div>
       <div className="flex gap-4">
