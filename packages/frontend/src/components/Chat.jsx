@@ -33,10 +33,10 @@ const Chat = ({ recipientWalletAddr }) => {
   }, [recipientWalletAddr, hasMessages, scrollToMessagesEndRef]);
 
   const getIsMe = (msg) => msg.senderAddress !== checksumAddress;
-
+  const isLoading = loadingConversations || loading;
   return (
     <div className="flex gap-4 flex-col">
-      {(loadingConversations || loading) && (
+      {isLoading && (
         <div className="flex justify-center">
           <Spinner />
         </div>
@@ -76,9 +76,14 @@ const Chat = ({ recipientWalletAddr }) => {
           e.target.style.height = `${e.target.scrollHeight}px`;
           setCurrentValue(e.target.value);
         }}
+        disabled={isLoading}
       ></textarea>
       <div className="flex justify-end">
-        <button className="btn btn-outline w-1/3" onClick={handleSend}>
+        <button
+          className="btn btn-outline w-1/3"
+          onClick={handleSend}
+          disabled={isLoading}
+        >
           Reply
         </button>
       </div>
