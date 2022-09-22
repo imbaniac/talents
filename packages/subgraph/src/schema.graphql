@@ -1,3 +1,21 @@
+type _Schema_
+  @fulltext(
+    name: "profileSearch"
+    language: en
+    algorithm: rank
+    include: [
+      {
+        entity: "Profile"
+        fields: [
+          { name: "position" }
+          { name: "category" }
+          { name: "details" }
+          { name: "skillsString" }
+        ]
+      }
+    ]
+  )
+
 type Account @entity {
   id: Bytes!
   asERC721: ERC721Contract
@@ -32,6 +50,7 @@ type Profile @entity {
   english: String!
   employmentTypes: [String!]!
   skills: [String!]
+  skillsString: String
   details: String
 }
 

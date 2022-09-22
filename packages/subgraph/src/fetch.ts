@@ -172,6 +172,8 @@ export function fetchProfileToken(
                 skillsTemp.push(skillsArray[i].toString());
               }
               token.skills = skillsTemp;
+
+              token.skillsString = skillsArray.join(', ');
             }
 
             const details = profilePropertiesJson.get('details');

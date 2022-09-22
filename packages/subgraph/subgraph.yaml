@@ -3,6 +3,7 @@ description: Subgraph for getting all Candidates
 features:
   - ipfsOnEthereumContracts
   - nonDeterministicIpfs
+  - fullTextSearch
 schema:
   file: ./src/schema.graphql
 dataSources:
