@@ -22,9 +22,11 @@ const ChatWrapper = ({ proposal, isSender }) => {
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold">
-              Chat with {proposal.profile.position}
-            </h1>
+            <h1 className="text-3xl font-bold">Chat with {proposal.name} </h1>
+            <h2 className="font-bold flex items-center gap-2">
+              {proposal.position} at {proposal.company}
+              <span className="badge">Not verified</span>
+            </h2>
           </div>
         )}
         <div className="flex bg-base-200 p-4 rounded-2xl gap-4 w-full">
@@ -43,6 +45,18 @@ const ChatWrapper = ({ proposal, isSender }) => {
             </div>
           </div>
         </div>
+        {isSender && (
+          <div className="flex gap-4">
+            <button className="btn">Mint Offer</button>
+          </div>
+        )}
+        {!isSender && (
+          <div className="flex">
+            <button className="btn btn-outline btn-secondary">
+              Reject proposal
+            </button>
+          </div>
+        )}
         <div className="divider m-0"></div>
         {client ? (
           <Chat
@@ -56,7 +70,7 @@ const ChatWrapper = ({ proposal, isSender }) => {
               className="btn btn-outline"
               onClick={() => initClient(signer)}
             >
-              Unlock to dialog
+              Unlock to chat
             </button>
           </div>
         )}

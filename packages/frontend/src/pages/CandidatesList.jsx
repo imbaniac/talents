@@ -7,6 +7,7 @@ import {
   displayEnglish,
   displayExperience,
 } from '../utils/helpers';
+import Skeleton from '../components/_atoms/Skeleton';
 import useDebounce from '../hooks/useDebounce';
 
 const ProfilesQuery = `
@@ -125,33 +126,9 @@ const CandidatesList = () => {
       </div>
       {(result.fetching || searchResults.fetching) && (
         <div className="flex flex-col gap-8 my-16">
-          <div role="status" className="w-full animate-pulse">
-            <div className="h-3 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div role="status" className="w-full animate-pulse">
-            <div className="h-3 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-            <span className="sr-only">Loading...</span>
-          </div>
-          <div role="status" className="w-full animate-pulse">
-            <div className="h-3 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-            <span className="sr-only">Loading...</span>
-          </div>
+          <Skeleton />
+          <Skeleton />
+          <Skeleton />
         </div>
       )}
       {(profileSearch.length && SHOULD_SEARCH ? profileSearch : profiles).map(

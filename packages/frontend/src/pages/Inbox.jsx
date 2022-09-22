@@ -3,6 +3,7 @@ import { useQuery } from 'urql';
 
 import { PROPOSAL_STATUSES_ENUM } from '../utils/constants';
 import ProposalItem from '../components/ProposalItem';
+import Skeleton from '../components/_atoms/Skeleton';
 
 const ReceiverProposalsQuery = `
   query($ownerAddress: String!, $status: Int!) {
@@ -52,10 +53,23 @@ const Inbox = () => {
   const acceptedProposals = acceptedProposalsResp.data?.proposals || [];
   const rejectedProposals = rejectedProposalsResp.data?.proposals || [];
 
+  const isLoading =
+    pendingProposalsResp.fetching ||
+    acceptedProposalsResp.fetching ||
+    rejectedProposalsResp.fetching;
+
   return (
     <div className="container mt-16 mx-auto max-w-2xl px-8 pb-8">
       <div className="flex flex-col gap-8">
         <h1 className="text-3xl font-bold">Inbox</h1>
+
+        {isLoading && (
+          <>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </>
+        )}
 
         {!!pendingProposals.length && (
           <div className="flex flex-col">
@@ -93,6 +107,12 @@ const Inbox = () => {
             </div>
           </div>
         )}
+        {!isLoading &&
+          !pendingProposals.length &&
+          !acceptedProposals.length &&
+          !rejectedProposals.length && (
+            <p>You do not have any incoming proposals yet 😔</p>
+          )}
       </div>
     </div>
   );

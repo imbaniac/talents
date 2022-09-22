@@ -14,7 +14,7 @@ const SenderProposalItem = ({ data }) => {
         <Link to={`/profile/${data.profile.id}`} className="link">
           {data.profile.position}
         </Link>{' '}
-        <div className="badge">{data.sender.id?.substring(0, 10)}</div>
+        <div className="badge">{data.owner.id?.substring(0, 10)}</div>
       </h2>
       <div className="divider m-0"></div>
       <div className="flex gap-4">
