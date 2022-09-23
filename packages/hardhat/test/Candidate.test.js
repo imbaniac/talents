@@ -11,7 +11,7 @@ describe('Talents DAPP', function () {
 
   describe('Candidate', () => {
     it('Should deploy Candidate', async () => {
-      const Candidate = await ethers.getContractFactory('Candidate');
+      const Candidate = await ethers.getContractFactory('CandidateNoVerify');
 
       candidate = await Candidate.deploy();
       expect(await candidate.name()).to.equal('Candidate');

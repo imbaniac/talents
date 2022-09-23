@@ -11,10 +11,10 @@ import {
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { WagmiConfig, chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { publicProvider } from 'wagmi/providers/public';
 import { refocusExchange } from '@urql/exchange-refocus';
-import { requestPolicyExchange } from '@urql/exchange-request-policy';
-
 import { render } from 'preact';
+import { requestPolicyExchange } from '@urql/exchange-request-policy';
 
 import App from './App';
 import CandidateProfile from './pages/CandidateProfile';
@@ -30,15 +30,34 @@ import XmtpProvider from './components/XmtpProvider';
 
 const { chains, provider } = configureChains(
   [
+    chain.polygonMumbai,
     chain.hardhat,
     // chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum
   ],
   [
     jsonRpcProvider({
-      rpc: () => ({
-        http: 'http://127.0.0.1:8545',
-      }),
+      rpc: (rpcChain) => {
+        if (rpcChain.id !== chain.polygonMumbai.id) {
+          return null;
+        }
+        console.log('Using Quicknode mumbai endpoint');
+        return {
+          http: `https://misty-wandering-dew.matic-testnet.discover.quiknode.pro/${
+            import.meta.env.VITE_QUICKNODE_API_KEY
+          }/`,
+        };
+      },
     }),
+    jsonRpcProvider({
+      rpc: (rpcChain) => {
+        console.log('Using Hardhat local endpoint');
+        if (rpcChain.id !== chain.hardhat.id) {
+          return null;
+        }
+        return { http: 'http://127.0.0.1:8545' };
+      },
+    }),
+    publicProvider(),
   ]
 );
 

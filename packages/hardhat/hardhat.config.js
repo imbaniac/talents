@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('dotenv').config();
 const { utils } = require('ethers');
 const fs = require('fs');
@@ -21,7 +22,8 @@ const { isAddress, getAddress, formatUnits, parseUnits } = utils;
 //
 // Select the network you want to deploy to here:
 //
-const defaultNetwork = 'localhost';
+// const defaultNetwork = 'localhost';
+const defaultNetwork = 'mumbai';
 
 function mnemonic() {
   try {
@@ -64,6 +66,7 @@ module.exports = {
   networks: {
     localhost: {
       url: 'http://localhost:8545',
+      deploy: ['deploy/'],
       /*
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
@@ -130,6 +133,7 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
+      deploy: ['deploy-polygon/'],
     },
     mumbai: {
       url: 'https://rpc-mumbai.maticvigil.com',
@@ -137,6 +141,7 @@ module.exports = {
       accounts: {
         mnemonic: mnemonic(),
       },
+      deploy: ['deploy-polygon/'],
     },
     matic: {
       url: 'https://rpc-mainnet.maticvigil.com/',
@@ -404,7 +409,7 @@ task(
   'Create a mnemonic for builder deploys',
   async (_, { ethers }) => {
     const bip39 = require('bip39');
-    const hdkey = require('ethereumjs-wallet/hdkey');
+    const { hdkey } = require('ethereumjs-wallet');
     const mnemonic = bip39.generateMnemonic();
     if (DEBUG) console.log('mnemonic', mnemonic);
     const seed = await bip39.mnemonicToSeed(mnemonic);
@@ -415,11 +420,12 @@ task(
     const fullPath = wallet_hdpath + account_index;
     if (DEBUG) console.log('fullPath', fullPath);
     const wallet = hdwallet.derivePath(fullPath).getWallet();
-    const privateKey = '0x' + wallet._privKey.toString('hex');
+
+    const privateKey = '0x' + wallet.privateKey.toString('hex');
     if (DEBUG) console.log('privateKey', privateKey);
     const EthUtil = require('ethereumjs-util');
     const address =
-      '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex');
+      '0x' + EthUtil.privateToAddress(wallet.privateKey).toString('hex');
     console.log(
       '🔐 Account Generated as ' +
         address +
@@ -458,11 +464,11 @@ task(
       const fullPath = wallet_hdpath + account_index;
       if (DEBUG) console.log('fullPath', fullPath);
       const wallet = hdwallet.derivePath(fullPath).getWallet();
-      const privateKey = '0x' + wallet._privKey.toString('hex');
+      const privateKey = '0x' + wallet.privateKey.toString('hex');
       if (DEBUG) console.log('privateKey', privateKey);
       const EthUtil = require('ethereumjs-util');
       address =
-        '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex');
+        '0x' + EthUtil.privateToAddress(wallet.privateKey).toString('hex');
 
       const rlp = require('rlp');
       const keccak = require('keccak');
@@ -504,7 +510,7 @@ task(
   'account',
   'Get balance informations for the deployment account.',
   async (_, { ethers }) => {
-    const hdkey = require('ethereumjs-wallet/hdkey');
+    const { hdkey } = require('ethereumjs-wallet');
     const bip39 = require('bip39');
     try {
       const mnemonic = fs.readFileSync('./mnemonic.txt').toString().trim();
@@ -517,11 +523,11 @@ task(
       const fullPath = wallet_hdpath + account_index;
       if (DEBUG) console.log('fullPath', fullPath);
       const wallet = hdwallet.derivePath(fullPath).getWallet();
-      const privateKey = '0x' + wallet._privKey.toString('hex');
+      const privateKey = '0x' + wallet.privateKey.toString('hex');
       if (DEBUG) console.log('privateKey', privateKey);
       const EthUtil = require('ethereumjs-util');
       const address =
-        '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex');
+        '0x' + EthUtil.privateToAddress(wallet.privateKey).toString('hex');
 
       const qrcode = require('qrcode-terminal');
       qrcode.generate(address);
@@ -549,6 +555,7 @@ task(
       console.log(
         `--- Please run ${chalk.greenBright('yarn generate')} to create one`
       );
+      console.error(err);
     }
   }
 );

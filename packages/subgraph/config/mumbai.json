@@ -1,0 +1,11 @@
+{
+  "network": "mumbai",
+  "Candidate": {
+    "address": "0xe1731923eC8465A078E04C65CF67806d2B222Da3",
+    "startBlock": 28253636
+  },
+  "Proposal": {
+    "address": "0x70F1d69cb1e9dE4F943403fe27E9297ff76B8f82",
+    "startBlock": 28253638
+  }
+}

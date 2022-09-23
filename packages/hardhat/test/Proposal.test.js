@@ -21,7 +21,7 @@ describe('Talents DAPP', function () {
 
   describe('Proposal', () => {
     it('Should deploy Proposal', async () => {
-      const Candidate = await ethers.getContractFactory('Candidate');
+      const Candidate = await ethers.getContractFactory('CandidateNoVerify');
       const Proposal = await ethers.getContractFactory('Proposal');
 
       candidate = await Candidate.deploy();

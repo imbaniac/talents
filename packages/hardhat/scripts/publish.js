@@ -22,7 +22,30 @@ function publishContract(contractName, networkName) {
       console.log(e);
     }
 
-    graphConfig = JSON.parse(graphConfig);
+    const configPath = `${graphDir}/config/${networkName}.json`;
+    let config;
+    try {
+      if (fs.existsSync(configPath)) {
+        config = fs.readFileSync(configPath).toString();
+      } else {
+        config = '{}';
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    config = JSON.parse(config, null, 2);
+
+    config.network = networkName;
+    config[contractName] = {
+      ...config[contractName],
+      address: contract.address,
+      startBlock: contract.receipt.blockNumber,
+    };
+
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+
+    graphConfig = JSON.parse(graphConfig, null, 2);
+
     if (!(networkName in graphConfig)) {
       graphConfig[networkName] = {};
     }

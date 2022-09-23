@@ -8,10 +8,11 @@
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ GITHUB_USERNAME/candidate",
     "create-local": "graph create --node http://localhost:8020/ talents-eth/candidate",
     "remove-local": "graph remove --node http://localhost:8020/ talents-eth/candidate",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 talents-eth/candidate"
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 talents-eth/candidate",
+    "create-config": "mustache ./config/$CHAIN.json template.yaml > subgraph.yaml"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.29.1",
+    "@graphprotocol/graph-cli": "^0.33.1",
     "@graphprotocol/graph-ts": "^0.26.0"
   },
   "devDependencies": {

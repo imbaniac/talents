@@ -55,6 +55,11 @@ const Outbox = () => {
     },
   });
 
+  const isLoading =
+    pendingProposalsResp.fetching ||
+    acceptedProposalsResp.fetching ||
+    rejectedProposalsResp.fetching;
+
   const pendingProposals = pendingProposalsResp.data?.proposals || [];
   const acceptedProposals = acceptedProposalsResp.data?.proposals || [];
   const rejectedProposals = rejectedProposalsResp.data?.proposals || [];
@@ -100,6 +105,12 @@ const Outbox = () => {
             </div>
           </div>
         )}
+        {!isLoading &&
+          !pendingProposals.length &&
+          !acceptedProposals.length &&
+          !rejectedProposals.length && (
+            <p>You do not have any sended proposals yet 😔</p>
+          )}
       </div>
     </div>
   );

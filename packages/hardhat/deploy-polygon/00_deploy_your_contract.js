@@ -2,30 +2,33 @@
 
 const { ethers } = require('hardhat');
 
-// const sleep = (ms) =>
-//   new Promise((r) =>
-//     setTimeout(() => {
-//       console.log(`waited for ${(ms / 1000).toFixed(3)} seconds`);
-//       r();
-//     }, ms)
-//   );
-
 const main = async (hre) => {
-  const { getNamedAccounts, deployments, getChainId, ethernal } = hre;
+  const { getNamedAccounts, deployments, getChainId } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
   const chainId = await getChainId();
 
+  const worldIDAddress = await fetch(
+    'https://developer.worldcoin.org/api/v1/contracts'
+  )
+    .then((res) => res.json())
+    .then(
+      (res) => res.find(({ key }) => key === 'staging.semaphore.wld.eth').value
+    );
+
+  console.log('WORLD ID ADDRESS', worldIDAddress);
+
   console.log('DEPLOYER', deployer);
   console.log('CHAIN ID', chainId);
 
-  await deploy('CandidateNoVerify', {
+  await deploy('Candidate', {
     from: deployer,
     log: true,
+    args: [worldIDAddress, process.env.WORLDCOIN_ACTION_ID],
   });
 
   // Getting a previously deployed contract
-  const Candidate = await ethers.getContract('CandidateNoVerify', deployer);
+  const Candidate = await ethers.getContract('Candidate', deployer);
   console.log('CANDIDATE NFT ADDRESS', Candidate.address);
 
   await deploy('Proposal', {
@@ -37,15 +40,15 @@ const main = async (hre) => {
   const Proposal = await ethers.getContract('Proposal', deployer);
   console.log('PROPOSAL NFT ADDRESS', Proposal.address);
 
-  await ethernal.push({
-    name: 'Candidate',
-    address: Candidate.address,
-  });
+  // await ethernal.push({
+  //   name: 'Candidate',
+  //   address: Candidate.address,
+  // });
 
-  await ethernal.push({
-    name: 'Proposal',
-    address: Proposal.address,
-  });
+  // await ethernal.push({
+  //   name: 'Proposal',
+  //   address: Proposal.address,
+  // });
 
   /*  await YourContract.setPurpose("Hello");
   

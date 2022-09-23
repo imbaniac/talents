@@ -230,7 +230,6 @@ export function fetchProposalToken(
       .toHex()
       .concat('/')
       .concat(profile_id.toHex());
-    // const profileToken = Profile.load(id);
 
     token.profile = profileTokenId;
 

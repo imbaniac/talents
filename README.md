@@ -43,3 +43,12 @@ Go to /etc/hosts and comment out this line
 - Register API KEY
 - Get ROOT token
 -
+
+### Worldcoin
+
+- Please add to Ukrainian App Store. I lost 1 hour for creating and switching accounts on my Iphone.
+- Add log out to mobile app
+
+### The graph
+
+Run $CHAIN={your_chain_name} yarn create-config

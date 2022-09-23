@@ -1,4 +1,6 @@
 import { NFTStorage } from 'nft.storage';
+import { WorldIDWidget } from '@worldcoin/id';
+import { defaultAbiCoder as abi } from '@ethersproject/abi';
 import {
   useAccount,
   useContractWrite,
@@ -20,6 +22,8 @@ import {
 import { useStore } from '../store';
 import contracts from '../contracts/hardhat_contracts.json';
 
+const WORLDCOIN_CHAINS = [80001, 137];
+
 const MintProfile = () => {
   const navigate = useNavigate();
   const addRecentTransaction = useAddRecentTransaction();
@@ -28,9 +32,12 @@ const MintProfile = () => {
 
   const [ipfsCID, setIpfsCID] = useState('');
   const [isIpfsLoading, setIpfsLoading] = useState(false);
+  const [worldcoinVerification, setWorldcoinVerification] = useState({});
 
   const { chain } = useNetwork();
   const { address } = useAccount();
+
+  const shouldUseWorldcoin = WORLDCOIN_CHAINS.includes(chain?.id);
 
   const CandidateContract = contracts[chain?.id]?.[0].contracts.Candidate || {};
 
@@ -38,30 +45,45 @@ const MintProfile = () => {
     addressOrName: CandidateContract.address,
     contractInterface: CandidateContract.abi,
     functionName: 'mintProfile',
-    enabled: address && ipfsCID,
+    enabled: address && ipfsCID && worldcoinVerification.merkle_root,
     chainId: chain.id,
-    args: [address, ipfsCID],
+    args: [
+      address,
+      ipfsCID,
+      ...(shouldUseWorldcoin
+        ? [
+            worldcoinVerification.merkle_root,
+            worldcoinVerification.nullifier_hash,
+            worldcoinVerification.proof
+              ? abi.decode(['uint256[8]'], worldcoinVerification.proof)[0]
+              : [],
+          ]
+        : []),
+    ],
     overrides: {
-      gasLimit: 200000,
+      // TODO: change to adequate amount
+      gasLimit: 1000000,
     },
   });
 
-  const { data, isSuccess, write } = useContractWrite({
+  const { write } = useContractWrite({
     ...config,
     onSuccess(data) {
       addRecentTransaction({
         hash: data.hash,
-        description: 'Minting profile',
+        description: 'Minting profile NFT',
       });
       navigate('/inbox');
+    },
+    onError(data) {
+      console.log('ERROR', data);
     },
   });
 
   const handleMint = async () => {
     const nftData = {
       name: newProfileForm.position,
-      description:
-        'Talents are an unlimited collection of Soulbound NTFs living on multiple blockchains.',
+      description: 'Pseudo-anonymous candidate profile soulbound NFT',
       properties: { ...newProfileForm },
     };
 
@@ -163,16 +185,45 @@ const MintProfile = () => {
         </div>
         <div>
           <div className="divider" />
-          <label
-            htmlFor="mint-profile-modal"
-            type="submit"
-            onClick={handleMint}
-            className={`btn btn-primary modal-button w-full ${
-              isIpfsLoading ? 'loading' : ''
-            }`}
-          >
-            Mint
-          </label>
+          <div className="flex flex-col items-center gap-8">
+            {shouldUseWorldcoin &&
+              address &&
+              !worldcoinVerification.merkle_root && (
+                <div>
+                  <p className="mb-4">
+                    Please verify that you are a real person
+                  </p>
+                  <WorldIDWidget
+                    actionId={import.meta.env.VITE_WORLDCOIN_ACTION_ID}
+                    signal={address}
+                    enableTelemetry
+                    appName="Talents"
+                    debug
+                    onSuccess={(verificationResponse) => {
+                      console.log(verificationResponse);
+                      setWorldcoinVerification(verificationResponse);
+                    }}
+                    onError={(error) => console.error(error)}
+                    onInitSuccess={() => console.log('Init successful')}
+                    onInitError={(error) =>
+                      console.log('Error while initialization World ID', error)
+                    }
+                  />
+                </div>
+              )}
+            <button
+              disabled={
+                shouldUseWorldcoin && !worldcoinVerification.merkle_root
+              }
+              type="submit"
+              onClick={handleMint}
+              className={`btn btn-primary modal-button w-full ${
+                isIpfsLoading ? 'loading' : ''
+              }`}
+            >
+              Mint
+            </button>
+          </div>
         </div>
       </div>
     </div>

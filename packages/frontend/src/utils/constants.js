@@ -118,6 +118,7 @@ export const EMPLOYMENT_TYPES = [
   { value: 'full_time', displayLabel: 'Full-time' },
   { value: 'part_time', displayLabel: 'Part-time' },
   { value: 'remote_work', displayLabel: 'Remote' },
+  { value: 'office', displayLabel: 'Office' },
   { value: 'gig', displayLabel: 'Gig (one-time project)' },
   { value: 'relocation', displayLabel: 'Relocation' },
 ];

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
-import { useState } from 'react';
 
 import {
   displayCountry,
@@ -65,6 +65,7 @@ const formatQuery = (string) => {
 const CandidatesList = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const [result] = useQuery({
     query: ProfilesQuery,
   });
@@ -84,6 +85,15 @@ const CandidatesList = () => {
     [],
     800
   );
+
+  useEffect(() => {
+    if (result.fetching || searchResults.fetching) {
+      setLoading(true);
+    }
+    if (!result.fetching || !searchResults.fetching) {
+      setTimeout(() => setLoading(false), 1000);
+    }
+  }, [result.fetching, searchResults.fetching]);
 
   const profiles = result.data?.profiles || [];
   const profileSearch = searchResults.data?.profileSearch || [];
@@ -124,15 +134,14 @@ const CandidatesList = () => {
           </div>
         </div>
       </div>
-      {(result.fetching || searchResults.fetching) && (
+      {isLoading ? (
         <div className="flex flex-col gap-8 my-16">
           <Skeleton />
           <Skeleton />
           <Skeleton />
         </div>
-      )}
-      {(profileSearch.length && SHOULD_SEARCH ? profileSearch : profiles).map(
-        (profile) => (
+      ) : (
+        (SHOULD_SEARCH ? profileSearch : profiles).map((profile) => (
           <>
             <div className="divider"></div>
             <div key={profile.id} className="flex flex-col gap-8">
@@ -156,7 +165,7 @@ const CandidatesList = () => {
               </div>
             </div>
           </>
-        )
+        ))
       )}
     </div>
   );

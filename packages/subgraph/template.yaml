@@ -9,11 +9,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Candidate
-    network: mumbai
+    network: {{network}}
     source:
       abi: Candidate
-      address: "0xe1731923eC8465A078E04C65CF67806d2B222Da3"
-      startBlock: 28253636
+      address: "{{Candidate.address}}"
+      startBlock: {{Candidate.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -22,7 +22,7 @@ dataSources:
         - Profile
       abis:
         - name: Candidate
-          file: ./abis/mumbai_Candidate.json
+          file: ./abis/{{network}}_Candidate.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleProfileMint
@@ -30,11 +30,11 @@ dataSources:
 
   - kind: ethereum/contract
     name: Proposal
-    network: mumbai
+    network: {{network}}
     source:
       abi: Proposal
-      address: "0x70F1d69cb1e9dE4F943403fe27E9297ff76B8f82"
-      startBlock: 28253638
+      address: "{{Proposal.address}}"
+      startBlock: {{Proposal.startBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -43,9 +43,9 @@ dataSources:
         - Proposal
       abis:
         - name: Proposal
-          file: ./abis/mumbai_Proposal.json
+          file: ./abis/{{network}}_Proposal.json
         - name: Candidate
-          file: ./abis/mumbai_Candidate.json
+          file: ./abis/{{network}}_Candidate.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleProposalMint
