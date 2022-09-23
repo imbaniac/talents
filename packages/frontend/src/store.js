@@ -27,4 +27,6 @@ const FILLED_FORM = {
 export const useStore = create((set) => ({
   newProfileForm: FILLED_FORM,
   setProfileForm: (nextProfileForm) => set({ newProfileForm: nextProfileForm }),
+  profile: null,
+  setProfile: (newProfile) => set({ profile: newProfile }),
 }));

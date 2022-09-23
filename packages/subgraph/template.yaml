@@ -4,6 +4,7 @@ features:
   - ipfsOnEthereumContracts
   - nonDeterministicIpfs
   - fullTextSearch
+  - nonFatalErrors
 schema:
   file: ./src/schema.graphql
 dataSources:

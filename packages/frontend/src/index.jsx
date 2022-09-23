@@ -19,8 +19,10 @@ import { requestPolicyExchange } from '@urql/exchange-request-policy';
 import App from './App';
 import CandidateProfile from './pages/CandidateProfile';
 import CandidatesList from './pages/CandidatesList';
+import EditProfile from './pages/EditProfile';
 import Inbox from './pages/Inbox';
 import MintProfile from './pages/MintProfile';
+import MyProfile from './pages/MyProfile';
 import NewProfile from './pages/NewProfile';
 import Outbox from './pages/Outbox';
 import ProposalChat from './pages/ProposalChat';
@@ -98,6 +100,8 @@ render(
               <Route path="/" element={<App />}>
                 <Route index element={<Welcome />} />
                 <Route path="profile">
+                  <Route path="self" element={<MyProfile />} />
+                  <Route path="self/edit" element={<EditProfile />} />
                   <Route path="new" element={<NewProfile />} />
                   <Route path="mint" element={<MintProfile />} />
                   <Route

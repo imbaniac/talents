@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-
 import ConnectButton from './ConnectButton';
 
-const Navbar = () => {
+const Navbar = ({ hasProfile }) => {
   const { address } = useAccount();
 
   return (
@@ -32,6 +32,13 @@ const Navbar = () => {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 gap-1"
             >
               <li>
+                {hasProfile ? (
+                  <Link to="profile/self">My profile</Link>
+                ) : (
+                  <Link to="profile/new">Find job</Link>
+                )}
+              </li>
+              <li>
                 <Link to="inbox">Inbox</Link>
               </li>
               <li>
@@ -47,9 +54,20 @@ const Navbar = () => {
           Talents
         </Link>
       </div>
-      <div className="navbar-end w-[60%]">
+      <div className="navbar-end w-[80%]">
         {address && (
           <ul className="menu menu-horizontal p-0 gap-4 mr-4 hidden lg:flex">
+            <li>
+              {hasProfile ? (
+                <Link className="btn btn-ghost" to="profile/self">
+                  My profile
+                </Link>
+              ) : (
+                <Link className="btn btn-ghost" to="profile/new">
+                  Find job
+                </Link>
+              )}
+            </li>
             <li>
               <Link className="btn btn-ghost" to="inbox">
                 Inbox

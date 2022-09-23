@@ -1,5 +1,81 @@
 # talents-eth
 
+## Sponsors
+
+Implented:
+
+- Polygon: Smart contracts are deployed on Mumbai Polygon network (testnet) — for scalability and lower fees.
+- TheGraph: Self-hosted graph with IPFS and full-text search features.
+- Worldcoin: To create a Candidate NFT, you need to prove that you're real human and forces to have only one account.
+- IPFS/Filecoin: NFT metadata is stored on IPFS network, pinned by NFT.storage.
+- XMTP: Communication between candidate and employer
+
+- QuickNode: for RPC on frontend site for Mainner Ethereum network
+
+Need to do:
+
+- ENS: to use domains in change of addresses when possible
+- EPNS: to send notification about new proposal
+- Sizmo: Badges for my Candidate NFT
+- Livepeer (start Livepeer call for interview)
+- AURORA: deploy and test
+- Cronos: deploy
+- Skale. Launch Dapp to share reward. (20k)
+- Unlock. For companies account.
+- Spruce for login.
+
+Worth trying (in priority order):
+
+- Abacus
+- Tableland. To store, update and fetch metadata instead of IPFS and TheGraph
+- Unstoppable login
+- Superfluid. To pay for test tasks. (20k)
+- Optimism. Can be deployed for $250 prize. (20k, but project isn't a good fit)
+
+Not used:
+
+- AAVE
+- APWine
+- Yearn
+- Lens
+- Āut Protocol
+
+#### Worldcoin
+
+**Use case:**
+For Anonymous Talent Pool to be usefull, each Candidate should be a real person.
+Thanks to Worldcoin, Employer can be sure that he communicate with real person with only one profile.
+
+**Depth of the integration:**
+For hackathon I used onchain integration on staging environment.
+Smart contract implementation: `/packages/hardhat/contracts/Candidate.sol`
+Front-end implementation: `/packages/frontend/src/pages/MintProfile.jsx`
+
+**Future posibilities:**
+
+- Candidates and Employers at our platform could be a good fit for being Orb Operators — after building a track record of successfull hires and employements. And this will help to onboard new people to Talents.
+
+**What can be improved:**
+
+- Please, fix React widget — it changes fonts for the whole application.
+- Sign out from mobile app.
+- Improve availability of Worldcoin Simulator.
+
+### TheGraph
+
+Unfortunately I can't deploy my subgraph, as it's using IPFS and full-text search features. And my protocol isn't useful without this features. Subgraph for Talents propocol could be used to query Candidates by required parameters and use for statistics, HRs etc.
+
+**Issues**
+
+- ipfs.cat returns null from time to time (needs time to appear on network). And it breaks subgraph.
+- `graph build` deletes startBlock attribute from .yaml cofig
+
+### XMTP
+
+**Issues**
+
+- XMTP uses checksumed Ethereum addresses and considers lowercased as different one. It shouldn't be a case, as it's the same address.
+
 ### How to run
 
 ```
@@ -43,11 +119,6 @@ Go to /etc/hosts and comment out this line
 - Register API KEY
 - Get ROOT token
 -
-
-### Worldcoin
-
-- Please add to Ukrainian App Store. I lost 1 hour for creating and switching accounts on my Iphone.
-- Add log out to mobile app
 
 ### The graph
 

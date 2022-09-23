@@ -21,6 +21,7 @@ services:
       GRAPH_LOG: info
       GRAPH_ALLOW_NON_DETERMINISTIC_IPFS: 1
       GRAPH_ALLOW_NON_DETERMINISTIC_FULLTEXT_SEARCH: 1
+      GRAPH_ALLOW_NON_FATAL_ERRORS: 1
     extra_hosts:
       - 'host.docker.internal:host-gateway'
   ipfs:

@@ -13,38 +13,23 @@ import { useStore } from '../store';
 import MultipleComboBox from '../components/_molecules/MultiComboBox';
 
 const NewProfile = () => {
+  const profile = useStore((state) => state.profile);
   const navigate = useNavigate();
-  const setProfileForm = useStore((state) => state.setProfileForm);
-  const newProfileForm = useStore((state) => state.newProfileForm);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    control,
-  } = useForm({
+
+  if (!profile) {
+    return;
+  }
+
+  const { register, handleSubmit, watch, control } = useForm({
     defaultValues: {
-      // FILLED STATE
-      ...newProfileForm,
+      ...profile,
       experience: EXPERIENCE_GRADE.findIndex(
-        (opt) => opt.value === newProfileForm.experience
+        (opt) => opt.value === +profile.experience
       ),
     },
   });
 
-  const onSubmit = (data) => {
-    const parsedExperience = EXPERIENCE_GRADE[data.experience].value;
-    const newData = {
-      ...data,
-      experience: parsedExperience,
-      employmentTypes: data.employmentTypes.filter((t) => t),
-    };
-    console.log('SUBMITTING', newData);
-    setProfileForm(newData);
-    navigate('/profile/mint');
-  };
-  // TODO: handle errors
-  console.log('ERRORS', errors);
+  const onSubmit = () => {};
 
   const experienceValue = watch('experience');
   const experienceLabel = EXPERIENCE_GRADE[experienceValue]?.displayLabel;
@@ -52,13 +37,24 @@ const NewProfile = () => {
   return (
     <div className="container max-w-2xl mt-16 mx-auto px-8 pb-8">
       <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="text-3xl font-bold">New Profile</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Edit my profile</h1>
+          <button
+            className="btn btn-outline"
+            onClick={() => {
+              navigate('/profile/self');
+            }}
+          >
+            View as an employer
+          </button>
+        </div>
         <div className="form-control flex gap-4">
           <label className="text-sm font-semibold">Position</label>
           <input
             type="text"
             placeholder="Junior Solidity developer"
             className="input w-full input-bordered"
+            disabled
             {...register('position', {
               required: true,
             })}
@@ -67,6 +63,7 @@ const NewProfile = () => {
         <div className="form-control flex gap-4">
           <label className="text-sm font-semibold">Category</label>
           <select
+            disabled
             className="select select-bordered w-full"
             {...register('category', {
               validate: (value) => value && value !== 'none',
@@ -82,6 +79,7 @@ const NewProfile = () => {
         <div className="form-control flex gap-4">
           <label className="text-sm font-semibold">Country</label>
           <select
+            disabled
             className="select select-bordered w-full"
             {...register('country')}
           >
@@ -95,6 +93,7 @@ const NewProfile = () => {
         <div className="form-control flex gap-4">
           <label className="text-sm font-semibold">Work experience</label>
           <input
+            disabled
             type="range"
             min="0"
             max={EXPERIENCE_GRADE.length - 1}
@@ -126,6 +125,7 @@ const NewProfile = () => {
                       field: { onChange, onBlur, value, ...rest },
                     }) => (
                       <input
+                        disabled
                         type="radio"
                         className="radio"
                         name="english"
@@ -162,6 +162,7 @@ const NewProfile = () => {
                       field: { onChange, onBlur, value, ...rest },
                     }) => (
                       <input
+                        disabled
                         type="checkbox"
                         className="checkbox"
                         name="employmentTypes"
@@ -193,6 +194,7 @@ const NewProfile = () => {
             name="skills"
             render={({ field: { onChange, value } }) => (
               <MultipleComboBox
+                disabled
                 initialAllItems={SKILLS}
                 onChange={onChange}
                 initialSelectedItems={value}
@@ -207,6 +209,7 @@ const NewProfile = () => {
           <textarea
             className="textarea textarea-bordered"
             rows={5}
+            disabled
             {...register('details')}
           ></textarea>
           <p className="text-xs text-gray-600">
@@ -215,8 +218,8 @@ const NewProfile = () => {
             improve
           </p>
         </div>
-        <button type="submit" className="btn btn-primary">
-          Continue
+        <button disabled type="submit" className="btn btn-primary">
+          Update
         </button>
       </form>
     </div>

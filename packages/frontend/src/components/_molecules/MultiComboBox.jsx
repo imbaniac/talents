@@ -1,4 +1,4 @@
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
 import { useCombobox, useMultipleSelection } from 'downshift';
 import { useMemo, useState } from 'react';
 
@@ -16,6 +16,7 @@ const MultipleComboBox = ({
   initialAllItems,
   initialSelectedItems = [],
   onChange,
+  disabled,
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedItems, setSelectedItems] = useState(initialSelectedItems);
@@ -138,6 +139,7 @@ const MultipleComboBox = ({
           <div className="flex gap-0.5 grow" {...getComboboxProps()}>
             <input
               placeholder="Type your skills"
+              disabled={disabled}
               className="input input-ghost input-sm w-full focus:outline-none"
               {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
               value={inputValue}
@@ -172,6 +174,7 @@ MultipleComboBox.propTypes = {
   initialAllItems: arrayOf(string).isRequired,
   initialSelectedItems: arrayOf(string),
   onChange: func.isRequired,
+  disabled: bool.isRequire,
 };
 
 export default MultipleComboBox;
