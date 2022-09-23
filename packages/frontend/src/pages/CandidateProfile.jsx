@@ -7,7 +7,7 @@ import {
 } from 'wagmi';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'urql';
 
 import { EMPLOYMENT_TYPES } from '../utils/constants';
@@ -41,6 +41,7 @@ const ProfileQuery = `
 `;
 
 const CandidateProfile = () => {
+  const navigate = useNavigate();
   const params = useParams();
 
   const [result] = useQuery({
@@ -117,11 +118,48 @@ const CandidateProfile = () => {
     return null;
   }
 
+  const isMyProfile = address?.toLocaleLowerCase() === profile.owner.id;
+
   return (
     <div className="container mt-16 mx-auto max-w-2xl px-8 pb-8">
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
+            {isMyProfile && (
+              <>
+                <div className="alert">
+                  <div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      className="stroke-info flex-shrink-0 w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                    <div>
+                      <h3>This is your profile</h3>
+                    </div>
+                  </div>
+                  <div className="flex-none">
+                    <button
+                      className="btn btn-ghost btn-sm"
+                      onClick={() => {
+                        navigate('/profile/self/edit');
+                      }}
+                    >
+                      Edit profile
+                    </button>
+                  </div>
+                </div>
+                <div className="divider"></div>
+              </>
+            )}
             <h1 className="text-3xl font-bold">{profile.position}</h1>
             <div className="flex text-gray-500 text-sm">
               <span>{displayCountry(profile.country)}</span>
@@ -152,66 +190,75 @@ const CandidateProfile = () => {
           </div>
         </div>
       </div>
-      <div className="divider"></div>
-      <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-xl font-bold">Contact form</h2>
-        <div className="form-control w-full gap-4">
-          <label className="text-sm font-semibold">Name</label>
-          <input
-            type="text"
-            placeholder="Justin Drake"
-            className="input input-bordered w-full"
-            {...register('name', {
-              required: true,
-            })}
-          />
-        </div>
-        <div className="form-control w-full gap-4">
-          <label className="text-sm font-semibold">Position and Company</label>
-          <label className="input-group">
-            <input
-              type="text"
-              placeholder="Researcher"
-              className="input input-bordered w-full"
-              {...register('position', {
-                required: true,
-              })}
-            />
-            <span>at</span>
-            <input
-              type="text"
-              placeholder="Ethereum Foundation"
-              className="input input-bordered w-full"
-              {...register('company', {
-                required: true,
-              })}
-            />
-          </label>
-        </div>
-        <div className="form-control w-full gap-4">
-          <label className="text-sm font-semibold">
-            Briefly describe your proposition
-          </label>
-          <textarea
-            rows={5}
-            className="textarea textarea-bordered"
-            placeholder={`You look like a fit for our blockchain startup. Would like to discuss details with you.`}
-            {...register('message', {
-              required: true,
-            })}
-          ></textarea>
-          <p className="text-xs text-gray-600">
-            Do not put here any secret information, as it could be seen by
-            anyone.
-          </p>
-        </div>
-        <button
-          type="submit"
-          className={`btn btn-primary ${isIpfsLoading ? 'loading' : ''}`}
-        >
-          Send a proposal
-        </button>
-      </form>
+      {!isMyProfile && (
+        <>
+          <div className="divider"></div>
+          <form
+            className="flex flex-col gap-8"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <h2 className="text-xl font-bold">Contact form</h2>
+            <div className="form-control w-full gap-4">
+              <label className="text-sm font-semibold">Name</label>
+              <input
+                type="text"
+                placeholder="Justin Drake"
+                className="input input-bordered w-full"
+                {...register('name', {
+                  required: true,
+                })}
+              />
+            </div>
+            <div className="form-control w-full gap-4">
+              <label className="text-sm font-semibold">
+                Position and Company
+              </label>
+              <label className="input-group">
+                <input
+                  type="text"
+                  placeholder="Researcher"
+                  className="input input-bordered w-full"
+                  {...register('position', {
+                    required: true,
+                  })}
+                />
+                <span>at</span>
+                <input
+                  type="text"
+                  placeholder="Ethereum Foundation"
+                  className="input input-bordered w-full"
+                  {...register('company', {
+                    required: true,
+                  })}
+                />
+              </label>
+            </div>
+            <div className="form-control w-full gap-4">
+              <label className="text-sm font-semibold">
+                Briefly describe your proposition
+              </label>
+              <textarea
+                rows={5}
+                className="textarea textarea-bordered"
+                placeholder={`You look like a fit for our blockchain startup. Would like to discuss details with you.`}
+                {...register('message', {
+                  required: true,
+                })}
+              ></textarea>
+              <p className="text-xs text-gray-600">
+                Do not put here any secret information, as it could be seen by
+                anyone.
+              </p>
+            </div>
+            <button
+              type="submit"
+              className={`btn btn-primary ${isIpfsLoading ? 'loading' : ''}`}
+            >
+              Send a proposal
+            </button>
+          </form>
+        </>
+      )}
     </div>
   );
 };
