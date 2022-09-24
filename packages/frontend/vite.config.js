@@ -4,6 +4,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import alias from '@rollup/plugin-alias';
 import preact from '@preact/preset-vite';
 import svgr from 'vite-plugin-svgr';
+import viteCompression from 'vite-plugin-compression';
 
 export default defineConfig({
   plugins: [
@@ -17,6 +18,9 @@ export default defineConfig({
       ],
     }),
     svgr(),
+    viteCompression({
+      algorithm: 'brotliCompress',
+    }),
   ],
   build: {
     rollupOptions: {

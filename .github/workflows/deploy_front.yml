@@ -16,6 +16,12 @@ jobs:
       - name: Build
         run: yarn build
         working-directory: ./packages/frontend
+        env:
+          VITE_NFT_STORAGE_KEY: ${{ secrets.VITE_NFT_STORAGE_KEY }}
+          VITE_XMTP_ENV: ${{ secrets.VITE_XMTP_ENV }}
+          VITE_QUICKNODE_API_KEY: ${{ secrets.VITE_QUICKNODE_API_KEY }}
+          VITE_WORLDCOIN_ACTION_ID: ${{ secrets.VITE_WORLDCOIN_ACTION_ID }}
+          VITE_MORALIS_API_KEY: ${{ secrets.VITE_MORALIS_API_KEY }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
