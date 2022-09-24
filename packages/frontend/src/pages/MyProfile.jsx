@@ -9,6 +9,7 @@ import {
   getEmoji,
 } from '../utils/helpers';
 import { useStore } from '../store';
+import UserNFTsCollapse from '../components/UserNFTsCollapse';
 
 const MintProfile = () => {
   const profile = useStore((state) => state.profile);
@@ -75,7 +76,7 @@ const MintProfile = () => {
             <p>{profile.skills.join(', ')}</p>
           </div>
         </div>
-        <div className="border text-sm rounded-md">
+        <div className="border text-sm rounded-box">
           <h4 className="font-semibold p-4 border-b">Employment preferences</h4>
           <div className="p-4 flex flex-col gap-2">
             {EMPLOYMENT_TYPES.map((type) => (
@@ -86,6 +87,7 @@ const MintProfile = () => {
             ))}
           </div>
         </div>
+        <UserNFTsCollapse address={profile.owner.id} />
       </div>
     </div>
   );

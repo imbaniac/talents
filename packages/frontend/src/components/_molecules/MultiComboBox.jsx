@@ -174,7 +174,7 @@ MultipleComboBox.propTypes = {
   initialAllItems: arrayOf(string).isRequired,
   initialSelectedItems: arrayOf(string),
   onChange: func.isRequired,
-  disabled: bool.isRequire,
+  disabled: bool,
 };
 
 export default MultipleComboBox;

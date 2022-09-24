@@ -172,7 +172,7 @@ const MintProfile = () => {
             <p>{newProfileForm.skills.join(', ')}</p>
           </div>
         </div>
-        <div className="border text-sm rounded-md">
+        <div className="border text-sm rounded-box">
           <h4 className="font-semibold p-4 border-b">Employment preferences</h4>
           <div className="p-4 flex flex-col gap-2">
             {EMPLOYMENT_TYPES.map((type) => (

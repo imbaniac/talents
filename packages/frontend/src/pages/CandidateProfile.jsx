@@ -12,12 +12,14 @@ import { useQuery } from 'urql';
 
 import { EMPLOYMENT_TYPES } from '../utils/constants';
 import {
+  displayCategory,
   displayCountry,
   displayEnglish,
   displayExperience,
   getEmoji,
 } from '../utils/helpers';
 import { useForm } from 'react-hook-form';
+import UserNFTsCollapse from '../components/UserNFTsCollapse';
 import contracts from '../contracts/hardhat_contracts.json';
 
 const ProfileQuery = `
@@ -28,6 +30,7 @@ const ProfileQuery = `
       }
       identifier
       createdAt
+      category
 
       position
       skills
@@ -131,16 +134,16 @@ const CandidateProfile = () => {
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
+                      className="stroke-success flex-shrink-0 h-6 w-6"
                       fill="none"
                       viewBox="0 0 24 24"
-                      className="stroke-info flex-shrink-0 w-6 h-6"
                     >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth="2"
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
                     <div>
                       <h3>This is your profile</h3>
@@ -160,6 +163,9 @@ const CandidateProfile = () => {
                 <div className="divider"></div>
               </>
             )}
+            <div className="badge badge-secondary badge-outline p-4 text-xs">
+              {displayCategory(profile.category)}
+            </div>
             <h1 className="text-3xl font-bold">{profile.position}</h1>
             <div className="flex text-gray-500 text-sm">
               <span>{displayCountry(profile.country)}</span>
@@ -178,7 +184,7 @@ const CandidateProfile = () => {
             <p>{profile.skills.join(', ')}</p>
           </div>
         </div>
-        <div className="border text-sm rounded-md">
+        <div className="border text-sm rounded-box">
           <h4 className="font-semibold p-4 border-b">Employment preferences</h4>
           <div className="p-4 flex flex-col gap-2">
             {EMPLOYMENT_TYPES.map((type) => (
@@ -189,6 +195,7 @@ const CandidateProfile = () => {
             ))}
           </div>
         </div>
+        <UserNFTsCollapse address={profile.owner.id} />
       </div>
       {!isMyProfile && (
         <>
