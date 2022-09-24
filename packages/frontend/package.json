@@ -4,7 +4,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "start": "vite",
-    "build": "cross-env NODE_ENV=production vite build",
+    "build": "rm -rf dist && cross-env NODE_ENV=production vite build",
+    "preview": "vite preview",
     "pretty": "prettier --check src",
     "lint": "yarn pretty && eslint --max-warnings 0 --ext js,jsx,json src",
     "ucan-keypair-new": "ucan-storage keypair",
@@ -70,6 +71,7 @@
     "rollup-plugin-visualizer": "^5.8.0",
     "tailwindcss": "^3.1.8",
     "tailwindcss-classnames": "^3.0.6",
-    "vite": "^3.0.9"
+    "vite": "^3.0.9",
+    "vite-plugin-compression": "^0.5.1"
   }
 }
