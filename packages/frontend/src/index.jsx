@@ -74,6 +74,8 @@ const wagmiClient = createClient({
   provider,
 });
 
+console.log('prod test envs', import.meta.env);
+
 const graphqlClient = createGraphqlClient({
   url:
     import.meta.env.VITE_THEGRAPH_URI ||
