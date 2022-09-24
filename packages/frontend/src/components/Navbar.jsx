@@ -8,7 +8,7 @@ const Navbar = ({ hasProfile }) => {
 
   return (
     <div className="navbar bg-base-100 p-4">
-      <div className="navbar-start">
+      <div className="navbar-start w-[20%]">
         {address && (
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -29,8 +29,9 @@ const Navbar = ({ hasProfile }) => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 gap-1"
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64 gap-1"
             >
+              <ConnectButton className="mb-4" />
               <li>
                 {hasProfile ? (
                   <Link to="profile/self">My profile</Link>
@@ -83,9 +84,9 @@ const Navbar = ({ hasProfile }) => {
                 Candidates
               </Link>
             </li>
+            <ConnectButton />
           </ul>
         )}
-        <ConnectButton />
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ const Welcome = () => {
 
   const navigate = useNavigate();
   return (
-    <div className="mt-16 flex flex-col items-center">
-      <h1 className="text-4xl font-bold">Welcome to Talents</h1>
+    <div className="container mt-16 mx-auto max-w-2xl px-8 pb-8 flex flex-col items-center">
+      <h1 className="text-4xl font-bold text-center">Welcome to Talents</h1>
       <p className="text-lg mt-4 text-center">
         If you expect people to be looking for your project and your job
         openings, <br />

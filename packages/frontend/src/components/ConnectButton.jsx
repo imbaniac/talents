@@ -38,7 +38,7 @@ const ConnectButton = ({ className }) => {
               if (!connected) {
                 return (
                   <button
-                    className="btn btn-prmary"
+                    className="btn btn-outline"
                     onClick={openConnectModal}
                     type="button"
                   >
@@ -60,7 +60,7 @@ const ConnectButton = ({ className }) => {
               }
 
               return (
-                <div style={{ display: 'flex', gap: 12 }}>
+                <div className="flex flex-col lg:flex-row gap-4">
                   <button
                     onClick={openChainModal}
                     className="btn btn-outline btn-accent"
@@ -91,7 +91,7 @@ const ConnectButton = ({ className }) => {
 
                   <button
                     onClick={openAccountModal}
-                    className="btn btn-ghost"
+                    className="btn btn-info btn-outline"
                     type="button"
                   >
                     {account.displayName}
