@@ -1,13 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
+
 import ConnectButton from './ConnectButton';
+import logo from '../assets/logo.png';
 
 const Navbar = ({ hasProfile }) => {
   const { address } = useAccount();
 
   return (
-    <div className="navbar bg-base-100 p-4">
+    <div className="navbar bg-base-100 p-4 max-h-[64px]">
       <div className="navbar-start w-[20%]">
         {address && (
           <div className="dropdown">
@@ -52,41 +54,44 @@ const Navbar = ({ hasProfile }) => {
           </div>
         )}
         <Link to="/" className="btn btn-ghost normal-case text-xl">
+          <img className="w-[30px] h-auto mr-2" src={logo} />
           Talents Ninja
         </Link>
       </div>
       <div className="navbar-end w-[80%]">
-        {address && (
-          <ul className="menu menu-horizontal p-0 gap-4 mr-4 hidden lg:flex">
-            <li>
-              {hasProfile ? (
-                <Link className="btn btn-ghost" to="profile/self">
-                  My profile
+        <ul className="menu menu-horizontal p-0 gap-4 mr-4 hidden lg:flex">
+          {address && (
+            <>
+              <li>
+                {hasProfile ? (
+                  <Link className="btn btn-ghost" to="profile/self">
+                    My profile
+                  </Link>
+                ) : (
+                  <Link className="btn btn-ghost" to="profile/new">
+                    Find job
+                  </Link>
+                )}
+              </li>
+              <li>
+                <Link className="btn btn-ghost" to="inbox">
+                  Inbox
                 </Link>
-              ) : (
-                <Link className="btn btn-ghost" to="profile/new">
-                  Find job
+              </li>
+              <li>
+                <Link className="btn btn-ghost" to="outbox">
+                  Outbox
                 </Link>
-              )}
-            </li>
-            <li>
-              <Link className="btn btn-ghost" to="inbox">
-                Inbox
-              </Link>
-            </li>
-            <li>
-              <Link className="btn btn-ghost" to="outbox">
-                Outbox
-              </Link>
-            </li>
-            <li>
-              <Link className="btn btn-ghost" to="candidates">
-                Candidates
-              </Link>
-            </li>
-            <ConnectButton />
-          </ul>
-        )}
+              </li>
+              <li>
+                <Link className="btn btn-ghost" to="candidates">
+                  Candidates
+                </Link>
+              </li>
+            </>
+          )}
+          <ConnectButton />
+        </ul>
       </div>
     </div>
   );
