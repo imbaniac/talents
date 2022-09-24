@@ -10,35 +10,26 @@ Implented:
 - IPFS/Filecoin: NFT metadata is stored on IPFS network, pinned by NFT.storage.
 - XMTP: Communication between candidate and employer
 
+- EPNS: to send notification about new proposal
+- Sizmo: Badges for my Candidate NFT, loading existing NFTs from API (polygon and mainnet)
 - QuickNode: for RPC on frontend site for Mainner Ethereum network
 
 Need to do:
 
-- ENS: to use domains in change of addresses when possible
-- EPNS: to send notification about new proposal
-- Sizmo: Badges for my Candidate NFT
-- Livepeer (start Livepeer call for interview)
 - AURORA: deploy and test
 - Cronos: deploy
 - Skale. Launch Dapp to share reward. (20k)
-- Unlock. For companies account.
-- Spruce for login.
+- ENS: to use domains in change of addresses when possible
 
 Worth trying (in priority order):
 
+- Livepeer (start Livepeer call for interview)
+- Unlock. For companies account.
+- Spruce for login.
 - Abacus
 - Tableland. To store, update and fetch metadata instead of IPFS and TheGraph
 - Unstoppable login
 - Superfluid. To pay for test tasks. (20k)
-- Optimism. Can be deployed for $250 prize. (20k, but project isn't a good fit)
-
-Not used:
-
-- AAVE
-- APWine
-- Yearn
-- Lens
-- Āut Protocol
 
 #### Worldcoin
 

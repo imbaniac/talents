@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
 import { EMPLOYMENT_TYPES } from '../utils/constants';
@@ -54,8 +55,14 @@ const MintProfile = () => {
       <div className="divider" />
       <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-4">
-          <div className="badge badge-secondary badge-outline p-4 text-xs">
-            {displayCategory(profile.category)}
+          <div className="flex items-center gap-4">
+            <div className="badge badge-secondary badge-outline p-4 text-xs">
+              {displayCategory(profile.category)}
+            </div>
+            <span className="text-xs text-gray-500">
+              Published:{' '}
+              {format(new Date(profile.createdAt * 1000), 'dd MMM, HH:mm')}
+            </span>
           </div>
           <div className="flex flex-col gap-4">
             <h1 className="text-3xl font-bold">{profile.position}</h1>

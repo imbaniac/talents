@@ -38,10 +38,7 @@ const ChatWrapper = ({ proposal, isSender }) => {
           <div className="flex flex-col gap-2">
             <p>{proposal.message}</p>
             <div className="text-xs text-end">
-              {format(
-                new Date(proposal.createdAt * 1000),
-                'MMM dd, yyyy HH:mm'
-              )}
+              {format(new Date(proposal.createdAt * 1000), 'dd MMM, HH:mm')}
             </div>
           </div>
         </div>

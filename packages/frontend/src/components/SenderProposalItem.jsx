@@ -40,7 +40,7 @@ const SenderProposalItem = ({ data }) => {
         <div className="flex gap-2 w-full justify-between items-center">
           <div className="text-xs text-gray-600">
             {' '}
-            {format(new Date(data.createdAt * 1000), 'MMM dd, yyyy HH:mm')}
+            {format(new Date(data.createdAt * 1000), 'dd MMM, HH:mm')}
           </div>
 
           {data.status === PROPOSAL_STATUSES_ENUM.Accepted && (

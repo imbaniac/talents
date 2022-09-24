@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 
@@ -147,11 +148,19 @@ const CandidatesList = () => {
             <div key={profile.id} className="flex flex-col gap-8">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-4">
-                  <h1 className="text-xl font-bold btn-link">
-                    <Link to={`/profile/${profile.id}`}>
-                      {profile.position}
-                    </Link>
-                  </h1>
+                  <div className="flex justify-between">
+                    <h1 className="text-xl font-bold btn-link">
+                      <Link to={`/profile/${profile.id}`}>
+                        {profile.position}
+                      </Link>
+                    </h1>
+                    <span className="text-xs text-gray-500">
+                      {format(
+                        new Date(profile.createdAt * 1000),
+                        'dd MMM, HH:mm'
+                      )}
+                    </span>
+                  </div>
                   <div className="flex text-gray-500 text-sm">
                     <span>{displayCountry(profile.country)}</span>
                     <div className="divider divider-horizontal m-0"></div>

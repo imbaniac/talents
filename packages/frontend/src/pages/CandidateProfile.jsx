@@ -1,4 +1,5 @@
 import { NFTStorage } from 'nft.storage';
+import { format } from 'date-fns';
 import {
   useAccount,
   useContractWrite,
@@ -163,8 +164,14 @@ const CandidateProfile = () => {
                 <div className="divider"></div>
               </>
             )}
-            <div className="badge badge-secondary badge-outline p-4 text-xs">
-              {displayCategory(profile.category)}
+            <div className="flex gap-4 items-center">
+              <div className="badge badge-secondary badge-outline p-4 text-xs">
+                {displayCategory(profile.category)}
+              </div>
+              <span className="text-xs text-gray-500">
+                Published:{' '}
+                {format(new Date(profile.createdAt * 1000), 'dd MMM, HH:mm')}
+              </span>
             </div>
             <h1 className="text-3xl font-bold">{profile.position}</h1>
             <div className="flex text-gray-500 text-sm">
