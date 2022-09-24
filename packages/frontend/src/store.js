@@ -25,7 +25,7 @@ const FILLED_FORM = {
 
 // eslint-disable-next-line import/prefer-default-export
 export const useStore = create((set) => ({
-  newProfileForm: FILLED_FORM,
+  newProfileForm: CLEAN_STATE_FORM,
   setProfileForm: (nextProfileForm) => set({ newProfileForm: nextProfileForm }),
   profile: null,
   setProfile: (newProfile) => set({ profile: newProfile }),

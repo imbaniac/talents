@@ -22,6 +22,7 @@ jobs:
           VITE_QUICKNODE_API_KEY: ${{ secrets.VITE_QUICKNODE_API_KEY }}
           VITE_WORLDCOIN_ACTION_ID: ${{ secrets.VITE_WORLDCOIN_ACTION_ID }}
           VITE_MORALIS_API_KEY: ${{ secrets.VITE_MORALIS_API_KEY }}
+          VITE_THEGRAPH_URI: ${{ secrets.VITE_THEGRAPH_URI }}
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
