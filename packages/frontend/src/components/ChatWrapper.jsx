@@ -45,11 +45,11 @@ const ChatWrapper = ({ proposal, isSender }) => {
             </div>
           </div>
         </div>
-        {isSender && (
+        {/* {isSender && (
           <div className="flex gap-4">
             <button className="btn">Mint Offer</button>
           </div>
-        )}
+        )} */}
         {!isSender && (
           <div className="flex">
             <button className="btn btn-outline btn-secondary">
