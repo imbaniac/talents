@@ -51,7 +51,7 @@ const Navbar = ({ hasProfile }) => {
           </div>
         )}
         <Link to="/" className="btn btn-ghost normal-case text-xl">
-          Talents
+          Talents Ninja
         </Link>
       </div>
       <div className="navbar-end w-[80%]">

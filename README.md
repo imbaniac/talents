@@ -76,6 +76,13 @@ Unfortunately I can't deploy my subgraph, as it's using IPFS and full-text searc
 
 - XMTP uses checksumed Ethereum addresses and considers lowercased as different one. It shouldn't be a case, as it's the same address.
 
+### EPNS
+
+**Issues**
+
+- On dashboard it's not possible to change channel info or to use same Alias Address twice
+- Incorrect number of subscribers on Admin Dashboard
+
 ### How to run
 
 ```

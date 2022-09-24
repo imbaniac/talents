@@ -1,5 +1,5 @@
 specVersion: 0.0.5
-description: Subgraph for getting all Candidates
+description: Subgraph for Candidate and Proposal NFTs
 features:
   - ipfsOnEthereumContracts
   - nonDeterministicIpfs

@@ -75,7 +75,9 @@ const wagmiClient = createClient({
 });
 
 const graphqlClient = createGraphqlClient({
-  url: '/subgraphs/name/talents-eth/candidate',
+  url:
+    import.meta.env.VITE_THEGRAPH_URI ||
+    '/subgraphs/name/talents-eth/candidate',
   requestPolicy: 'cache-and-network',
   exchanges: [
     dedupExchange,
