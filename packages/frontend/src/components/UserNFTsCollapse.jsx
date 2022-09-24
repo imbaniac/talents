@@ -22,7 +22,7 @@ const UserNFTsCollapse = ({ address }) => {
     <div className="collapse border border-base-300 bg-base-100 rounded-box collapse-arrow">
       <input type="checkbox" />
       <div className="collapse-title font-semibold flex items-center gap-2">
-        NFTs {isLoading ? <Spinner width={4} height={4} /> : `(${NFTs.length})`}
+        NFTs {isLoading ? <Spinner /> : `(${NFTs.length})`}
       </div>
       {!!NFTs.length && (
         <div className="collapse-content  grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
