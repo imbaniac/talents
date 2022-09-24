@@ -11,13 +11,11 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        with:
-          folder: ./packages/frontend
+        working-directory: ./packages/frontend
 
       - name: Build
         run: yarn build
-        with:
-          folder: ./packages/frontend
+        working-directory: ./packages/frontend
 
       - name: Deploy
         uses: reggionick/s3-deploy@v3
