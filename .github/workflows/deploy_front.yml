@@ -3,6 +3,9 @@ on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: packages/frontend
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -11,15 +14,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        working-directory: packages/frontend
 
       - name: Build
         run: yarn build
-        working-directory: packages/frontend
 
       - name: Deploy
         uses: reggionick/s3-deploy@v3
-        working-directory: packages/frontend
         with:
           folder: dist
           bucket: ${{ secrets.S3_BUCKET }}
