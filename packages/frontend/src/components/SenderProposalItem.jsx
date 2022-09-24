@@ -36,7 +36,7 @@ const SenderProposalItem = ({ data }) => {
         </div>
       </div>
       <div className="flex flex-col gap-4">
-        <div>{data.message}</div>
+        <div className="whitespace-pre-wrap">{data.message}</div>
         <div className="flex gap-2 w-full justify-between items-center">
           <div className="text-xs text-gray-600">
             {' '}

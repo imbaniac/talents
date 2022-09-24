@@ -57,7 +57,7 @@ const Chat = ({ recipientWalletAddr }) => {
               </div>
             </div>
             <div className="flex flex-col gap-2 w-full">
-              <p>{message.content}</p>
+              <p className="whitespace-pre-wrap">{message.content}</p>
               <div className="text-xs text-end">
                 {format(new Date(message.sent), 'MMM dd, yyyy HH:mm')}
               </div>

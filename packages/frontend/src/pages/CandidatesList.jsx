@@ -160,7 +160,7 @@ const CandidatesList = () => {
                     <span>{displayEnglish(profile.english)}</span>
                   </div>
                 </div>
-                <p>{profile.details}</p>
+                <p className="whitespace-pre-wrap">{profile.details}</p>
                 <p className="text-sm">{profile.skills.join(', ')}</p>
               </div>
             </div>

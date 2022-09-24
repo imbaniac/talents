@@ -177,7 +177,7 @@ const CandidateProfile = () => {
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-xl font-bold">Work experience</h3>
-            <p>{profile.details}</p>
+            <p className="whitespace-pre-wrap">{profile.details}</p>
           </div>
           <div className="flex flex-col gap-4">
             <h3 className="text-xl font-bold">Skills</h3>
