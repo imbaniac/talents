@@ -1,3 +1,5 @@
+export const WHITELISTED_NFTs = [];
+
 export const PROPOSAL_STATUSES_ENUM = {
   Pending: 0,
   Accepted: 1,
