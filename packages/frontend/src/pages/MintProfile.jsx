@@ -37,14 +37,16 @@ const MintProfile = () => {
   const { chain } = useNetwork();
   const { address } = useAccount();
 
-  const shouldUseWorldcoin = WORLDCOIN_CHAINS.includes(chain?.id);
-
   const CandidateContract = contracts[chain?.id]?.[0].contracts.Candidate || {};
+
+  const [shouldUseWorldcoin, setShouldUseWorldcoin] = useState(
+    WORLDCOIN_CHAINS.includes(chain?.id)
+  );
 
   const { config } = usePrepareContractWrite({
     addressOrName: CandidateContract.address,
     contractInterface: CandidateContract.abi,
-    functionName: 'mintProfile',
+    functionName: shouldUseWorldcoin ? 'mintProfile' : 'mintProfileLocal',
     enabled: address && ipfsCID && worldcoinVerification.merkle_root,
     chainId: chain.id,
     args: [
@@ -211,6 +213,22 @@ const MintProfile = () => {
                   />
                 </div>
               )}
+            <label className="label cursor-pointer justify-center gap-4">
+              <div className="flex flex-col">
+                <span className="label-text">DEBUG: disable verification</span>
+                <span className="label-text text-xs">
+                  Worldcoin Simulator is often down
+                </span>
+              </div>
+              <input
+                type="checkbox"
+                checked={shouldUseWorldcoin}
+                onChange={(e) => {
+                  setShouldUseWorldcoin(e.target.checked);
+                }}
+                className="toggle"
+              />
+            </label>
             <button
               disabled={
                 shouldUseWorldcoin && !worldcoinVerification.merkle_root
