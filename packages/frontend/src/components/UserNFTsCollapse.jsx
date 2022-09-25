@@ -48,11 +48,11 @@ const UserNFTsCollapse = ({ address }) => {
               />
               <label
                 className="text-center font-bold link modal-button"
-                htmlFor="nft-modal"
+                htmlFor={`nft-modal-${nft.token_id}`}
               >
                 {`${nft.metadata.name} #${nft.token_id}`}
               </label>
-              <NFTModal nft={nft} modalId="nft-modal" />
+              <NFTModal nft={nft} modalId={`nft-modal-${nft.token_id}`} />
             </div>
           ))}
         </div>
@@ -73,6 +73,7 @@ const getNFTs = async (address) => {
   )
     .then((res) => res.json())
     .then((poaps) => {
+      console.log('poaps', poaps);
       return poaps.map((poap) => {
         return {
           chain: poap.chain,
