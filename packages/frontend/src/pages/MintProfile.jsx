@@ -213,7 +213,7 @@ const MintProfile = () => {
                   />
                 </div>
               )}
-            <label className="label cursor-pointer justify-center gap-4">
+            {/* <label className="label cursor-pointer justify-center gap-4">
               <div className="flex flex-col">
                 <span className="label-text">DEBUG: toggle verification</span>
                 <span className="label-text text-xs">
@@ -228,7 +228,7 @@ const MintProfile = () => {
                 }}
                 className="toggle"
               />
-            </label>
+            </label> */}
             <button
               disabled={
                 shouldUseWorldcoin && !worldcoinVerification.merkle_root
