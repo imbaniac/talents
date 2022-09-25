@@ -84,6 +84,7 @@ const CandidateProfile = () => {
         hash: data.hash,
         description: 'Minting proposal',
       });
+      navigate('/outbox');
     },
   });
 

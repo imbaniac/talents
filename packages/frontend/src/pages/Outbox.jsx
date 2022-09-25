@@ -69,22 +69,22 @@ const Outbox = () => {
       <div className="flex flex-col gap-8">
         <h1 className="text-3xl font-bold">Outbox</h1>
 
-        {!!pendingProposals.length && (
+        {!!acceptedProposals.length && (
           <div className="flex flex-col">
-            <h2 className="text-xl font-bold">Waiting for response</h2>
+            <h2 className="text-xl font-bold">Active</h2>
             <div className="mt-4 flex flex-col gap-8">
-              {pendingProposals.map((proposal) => (
+              {acceptedProposals.map((proposal) => (
                 <SenderProposalItem key={proposal.id} data={proposal} />
               ))}
             </div>
           </div>
         )}
 
-        {!!acceptedProposals.length && (
+        {!!pendingProposals.length && (
           <div className="flex flex-col">
-            <h2 className="text-xl font-bold">Active</h2>
+            <h2 className="text-xl font-bold">Waiting for response</h2>
             <div className="mt-4 flex flex-col gap-8">
-              {acceptedProposals.map((proposal) => (
+              {pendingProposals.map((proposal) => (
                 <SenderProposalItem key={proposal.id} data={proposal} />
               ))}
             </div>

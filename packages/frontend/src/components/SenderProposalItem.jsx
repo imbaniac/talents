@@ -9,11 +9,13 @@ const SenderProposalItem = ({ data }) => {
 
   return (
     <div className="flex flex-col gap-4 p-4 bg-base-200 rounded-2xl indicator w-full">
-      <h2 className="text-lg font-bold">
-        To:{' '}
-        <Link to={`/profile/${data.profile.id}`} className="link">
-          {data.profile.position}
-        </Link>{' '}
+      <h2 className="text-lg font-bold flex items-center justify-between gap-4">
+        <div>
+          <span>To: </span>
+          <Link to={`/profile/${data.profile.id}`} className="link">
+            {data.profile.position}
+          </Link>{' '}
+        </div>
         <div className="badge">{data.owner.id?.substring(0, 10)}</div>
       </h2>
       <div className="divider m-0"></div>

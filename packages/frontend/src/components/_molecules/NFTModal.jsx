@@ -1,3 +1,5 @@
+import { processIPFSImages } from '../../utils/helpers';
+
 /* eslint-disable react/prop-types */
 const NFTModal = ({ modalId, nft }) => (
   <>
@@ -7,7 +9,12 @@ const NFTModal = ({ modalId, nft }) => (
         <span className="badge badge-lg capitalize">{nft.chain}</span>
         <h3 className="font-bold text-lg">{`${nft.metadata.name} #${nft.token_id}`}</h3>
         <p>{nft.metadata.description}</p>
-        <img className="max-h-[200px] mx-auto" src={nft.metadata.image} />
+        {nft.metadata.image && (
+          <img
+            className="max-h-[200px] mx-auto"
+            src={processIPFSImages(nft.metadata.image)}
+          />
+        )}
 
         <div>
           <div>Contract address:</div>

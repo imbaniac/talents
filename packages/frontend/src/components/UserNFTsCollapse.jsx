@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 
 import { WHITELISTED_NFTs } from '../utils/constants';
+import { processIPFSImages } from '../utils/helpers';
 import NFTModal from './_molecules/NFTModal';
 import Spinner from './_atoms/Spinner';
 
@@ -136,12 +137,4 @@ const getNFTs = async (address) => {
   return [...poapNFTs, ...polygonNFTs, ...mainnetNFTs].filter(
     (nft) => nft.metadata?.name
   );
-};
-
-const processIPFSImages = (image = '') => {
-  const [protocol, link] = image.split('://');
-  if (protocol === 'ipfs') {
-    return `https://nftstorage.link/ipfs/${link}`;
-  }
-  return image;
 };

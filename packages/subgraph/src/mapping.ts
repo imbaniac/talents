@@ -10,6 +10,9 @@ import {
   fetchProfileToken,
   fetchProposalToken,
 } from './fetch';
+import { sendEPNSNotification } from './EPNSNotification';
+
+export const subgraphID = 'imbaniac/talents-ninja';
 
 export function handleProfileMint(event: TransferCandidateEvent): void {
   let contract = fetchERC721(event.address);
@@ -41,6 +44,25 @@ export function handleProposalMint(event: TransferProposalEvent): void {
     token.owner = to.id;
 
     if (token.message) {
+      let recipient = to.id.toHexString(),
+        type = '3',
+        title = `You have a new job proposal from ${token.company}`,
+        body = `
+From: ${token.name}
+Message: ${token.message}
+`,
+        subject = `You have a new job proposal from ${token.company}`,
+        message = `
+From: ${token.name}
+Message: ${token.message}
+`,
+        image = 'null',
+        secret = 'null',
+        cta = `https://demo.talents.ninja/chat/${token.id}`;
+
+      let notification = `{\"type\": \"${type}\", \"title\": \"${title}\", \"body\": \"${body}\", \"subject\": \"${subject}\", \"message\": \"${message}\", \"image\": \"${image}\", \"secret\": \"${secret}\", \"cta\": \"${cta}\"}`;
+      sendEPNSNotification(recipient, notification);
+
       contract.save();
       token.save();
     } else {

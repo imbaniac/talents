@@ -30,3 +30,11 @@ export const getEmoji = (bool) => (bool ? `✅` : `⛔️`);
 export const checkIfPathIsEns = (address) => {
   return address.includes('eth');
 };
+
+export const processIPFSImages = (image = '') => {
+  const [protocol, link] = image.split('://');
+  if (protocol === 'ipfs') {
+    return `https://nftstorage.link/ipfs/${link}`;
+  }
+  return image;
+};

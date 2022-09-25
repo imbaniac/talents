@@ -215,9 +215,9 @@ const MintProfile = () => {
               )}
             <label className="label cursor-pointer justify-center gap-4">
               <div className="flex flex-col">
-                <span className="label-text">DEBUG: disable verification</span>
+                <span className="label-text">DEBUG: toggle verification</span>
                 <span className="label-text text-xs">
-                  Worldcoin Simulator is often down
+                  Click if Worldcoin Simulator is down.
                 </span>
               </div>
               <input

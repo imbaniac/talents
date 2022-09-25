@@ -1,4 +1,5 @@
 import { useAccount } from 'wagmi';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 
 import { PROPOSAL_STATUSES_ENUM } from '../utils/constants';
@@ -25,6 +26,17 @@ const ReceiverProposalsQuery = `
 
 const Inbox = () => {
   const { address } = useAccount();
+  const [isEPNSshow, setEPNSshow] = useState(false);
+
+  useEffect(() => {
+    const epnsBanner = localStorage.getItem('epnsBanner');
+    if (epnsBanner) {
+      setEPNSshow(JSON.parse(epnsBanner));
+    } else {
+      setEPNSshow(true);
+    }
+  }, []);
+
   const [pendingProposalsResp] = useQuery({
     query: ReceiverProposalsQuery,
     variables: {
@@ -63,6 +75,46 @@ const Inbox = () => {
       <div className="flex flex-col gap-8">
         <h1 className="text-3xl font-bold">Inbox</h1>
 
+        {isEPNSshow && (
+          <div className="alert shadow-lg">
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="stroke-info flex-shrink-0 w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <p>Subscribe for a new job proposals with EPNS</p>
+            </div>
+            <div className="flex-none">
+              <a
+                className="btn btn-sm btn-ghost"
+                onClick={() => {
+                  localStorage.setItem('epnsBanner', false);
+                  setEPNSshow(false);
+                }}
+              >
+                Close
+              </a>
+              <a
+                href="https://staging.epns.io/#/channels?channel=0x9Fc1436C9216040bb706e31064133083A06bfFD1"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="btn btn-sm btn-primary"
+              >
+                Subscribe
+              </a>
+            </div>
+          </div>
+        )}
+
         {isLoading && (
           <>
             <Skeleton />
@@ -71,22 +123,22 @@ const Inbox = () => {
           </>
         )}
 
-        {!!pendingProposals.length && (
+        {!!acceptedProposals.length && (
           <div className="flex flex-col">
-            <h2 className="text-xl font-bold">New</h2>
+            <h2 className="text-xl font-bold">Active</h2>
             <div className="mt-4 flex flex-col gap-8">
-              {pendingProposals.map((proposal) => (
+              {acceptedProposals.map((proposal) => (
                 <ProposalItem key={proposal.id} data={proposal} />
               ))}
             </div>
           </div>
         )}
 
-        {!!acceptedProposals.length && (
+        {!!pendingProposals.length && (
           <div className="flex flex-col">
-            <h2 className="text-xl font-bold">Active</h2>
+            <h2 className="text-xl font-bold">New</h2>
             <div className="mt-4 flex flex-col gap-8">
-              {acceptedProposals.map((proposal) => (
+              {pendingProposals.map((proposal) => (
                 <ProposalItem key={proposal.id} data={proposal} />
               ))}
             </div>
