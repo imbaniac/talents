@@ -8,6 +8,8 @@ interview because of age, gender, skin color, or [name](https://www.raconteur.ne
 Join our decentralized impersonal talent pool and start getting job
 offers from top Web3 companies.
 
+<img src="assets/profile.png" width="600">
+
 ## How it works
 
 - _Profiles_ are pseudo anonymous, only following data is stored:
@@ -121,6 +123,12 @@ yarn graph-ship-local
 yarn start
 ```
 
+## Tests
+
+```
+yarn test
+```
+
 Each time you stop local hardhat node, state will be lost => you'll need to:
 
 - Reset Metamask wallet (to reset nonce)
@@ -155,3 +163,9 @@ Go to /etc/hosts and comment out this line
   - Request all data from PK
 - Register API KEY
 - Get ROOT token
+
+### Screenshots
+
+<img src="assets/home.png" width="600">
+<img src="assets/canidates.png" width="600">
+<img src="assets/chat2.png" width="600">
