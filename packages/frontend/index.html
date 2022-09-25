@@ -47,6 +47,17 @@
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
+    <script>
+      window.global = window;
+    </script>
+    <script type="module">
+      import process from 'process';
+      import EventEmitter from 'events';
+      import { Buffer } from 'buffer';
+      window.Buffer = Buffer;
+      window.process = process;
+      window.EventEmitter = EventEmitter;
+    </script>
   </head>
   <body class="bg-black-background">
     <noscript>Please, turn on JavaScript to see this page.</noscript>

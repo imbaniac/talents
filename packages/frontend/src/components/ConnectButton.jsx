@@ -1,6 +1,8 @@
 import { ConnectButton as RainbowConnectButton } from '@rainbow-me/rainbowkit';
 import { string } from 'prop-types';
 
+import Spinner from './_atoms/Spinner';
+
 const ConnectButton = ({ className }) => {
   return (
     <RainbowConnectButton.Custom>
@@ -91,9 +93,10 @@ const ConnectButton = ({ className }) => {
 
                   <button
                     onClick={openAccountModal}
-                    className="btn btn-info btn-outline"
+                    className={`btn btn-info btn-outline`}
                     type="button"
                   >
+                    {account.hasPendingTransactions && <Spinner />}
                     {account.displayName}
                     {account.displayBalance
                       ? ` (${account.displayBalance})`
